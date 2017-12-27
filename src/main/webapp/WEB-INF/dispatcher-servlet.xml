@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:contex="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:annotation-driven/>
+    <contex:component-scan base-package="com.codex.dialog"/>
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/Chem?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </bean>
+
+    <bean id="questionJDBCTemplate" class="com.codex.dialog.jdbcTemplate.QuestionJDBCTemplate">
+        <property name="dataSource" ref="DataSource"/>
+    </bean>
+
+
+    <bean id="topicJDBCTemplate" class="com.codex.dialog.jdbcTemplate.TopicJdbcTemplate">
+        <property name="dataSource" ref="DataSource"/>
+    </bean>
+
+    <bean id="answerJDBCTemplate" class="com.codex.dialog.jdbcTemplate.AnswerJDBCTemplate">
+        <property name="dataSource" ref="DataSource"/>
+    </bean>
+
+    <bean id="autherJDBCTemplate" class="com.codex.dialog.jdbcTemplate.AuthorJDBCTemplate">
+        <property name="dataSource" ref="DataSource"/>
+    </bean>
+
+</beans>
