@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Service
 public interface AuthorDAO {
 
-    public ArrayList<Auther> getAuther(String email) throws ClassNotFoundException, SQLException;
+    public Auther getAuther(String email) throws ClassNotFoundException, SQLException;
 
     public boolean addAuther(Auther auther) throws ClassNotFoundException, SQLException;
 

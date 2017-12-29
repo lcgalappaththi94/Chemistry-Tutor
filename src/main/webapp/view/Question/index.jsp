@@ -8,6 +8,7 @@
     <title>Login</title>
 
     <script type="text/javascript">
+        var verificationCode = "";
         function passwordVal(doc) {
             var password = doc.password.value;
             var cPassword = doc.cPassword.value;
@@ -21,6 +22,7 @@
                 if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("form-email").value)) {
                     window.alert("Invalid Email");
                     document.getElementById("form-email").value = "";
+                    document.getElementById("btn-veri").disabled = true;
                 }else{
                     sendRequest(form);
                 }
@@ -51,9 +53,38 @@
                         if (output === "0"){
                             window.alert("Email already taken please re-enter ....");
                             document.getElementById("form-email").value = "";
+                        }else{
+                            document.getElementById("btn-veri").disabled = false;
                         }
                     }
                 }
+            }
+        }
+
+        function veriCode() {
+            var email = document.getElementById("form-email").value;
+            var url = "verif?email="+email;
+            var request = createXMLHttpRequest();
+            request.open("GET", url, true);
+            request.send(null);
+            request.onreadystatechange = function () {
+                if (request.readyState == 4) {
+                    if (request.status == 200) {
+                        verificationCode = request.responseText;
+                        if (verificationCode = "AB"){
+                            window.alert("Something went wrong please check your email")
+                        }
+                    }
+                }
+            }
+        }
+        function onSubmitCodeCheck() {
+            var code = document.getElementById("code").value;
+            if (code === verificationCode){
+                return true;
+            }else{
+                document.getElementById("code").value = "";
+                return false;
             }
         }
     </script>
@@ -123,7 +154,7 @@
                             </div>
                         </div>
                         <div class="form-bottom">
-                            <form name="sign" action="/addAuther" method="post" class="registration-form">
+                            <form name="sign" action="/addAuther" method="post" class="registration-form" onsubmit="onSubmitCodeCheck();">
                                 <div class="form-group">
                                     <label class="sr-only" for="form-first-name">First name</label>
                                     <input type="text" name="name" placeholder="Enter name..."
@@ -134,6 +165,12 @@
                                     <label class="sr-only" for="form-email">Email</label>
                                     <input type="text" name="form-email" placeholder="Email..."
                                            class="form-email form-control" id="form-email" required onblur="checkEmail(this);">
+                                </div>
+                                <div class="form-group">
+                                    <button id="btn-veri" type="button" class="btn btn-danger" onclick="veriCode();" n disabled> Send Verification Code </button><br>
+                                    <label class="sr-only" for="form-email">Verification Code</label>
+                                    <input type="text" name="form-code" placeholder="Verification Code..."
+                                           class="form-email form-control" id="code" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="sr-only" for="form-first-name">Password</label>

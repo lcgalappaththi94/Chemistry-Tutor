@@ -25,8 +25,15 @@ public class AuthorJDBCTemplate implements AuthorDAO {
 
 
     @Override
-    public ArrayList<Auther> getAuther(String email) throws ClassNotFoundException, SQLException {
-        return null;
+    public Auther getAuther(String email) throws ClassNotFoundException, SQLException {
+        String sql = "select * from Author where email = ? limit 1";
+        Auther a;
+        try {
+            a = jdbcTemplateObject.queryForObject(sql, new AutherMapper(), email);
+            return a;
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
 
     @Override

@@ -2,13 +2,14 @@ package com.codex.dialog.controller;
 
 import com.codex.dialog.dao.AuthorDAO;
 import com.codex.dialog.model.Auther;
-import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.Properties;
+import java.util.Random;
+
 
 @Controller
 @RequestMapping("/")
@@ -31,18 +35,15 @@ public class AuthorController {
         boolean isAuthExists = authorDAO.isAuther(request.getParameter("form-email"));
         if (!isAuthExists) {
             isAuthExists = authorDAO.addAuther(auther);
-            String msg = "Added Successfully";
-            request.setAttribute("msg", msg);
+            Auther addedAuther = authorDAO.getAuther(request.getParameter("form-email"));
+            HttpSession session = request.getSession();
+            session.setAttribute("authId", addedAuther.getAuthId());
             return "Question/successHome";
-        } else if (isAuthExists) {
-            String msg = "Email is already taken";
-            request.setAttribute("msg", msg);
         } else {
             String msg = "Failed To add";
             request.setAttribute("msg", msg);
             return "Question/failHome";
         }
-        return "success";
     }
 
     @RequestMapping(value = "mailTaken", method = RequestMethod.GET)
@@ -122,6 +123,50 @@ public class AuthorController {
            out.print("0");
         }else {
             out.print("1");
+        }
+    }
+
+    @RequestMapping(value = "verif", method = RequestMethod.GET)
+    public void confirmEmail(HttpServletRequest request ,HttpServletResponse response) throws SQLException, ClassNotFoundException, IOException {
+
+        PrintWriter out = response.getWriter();
+
+        String receiverEmail = request.getParameter("email");
+        //Creating 4 digit random code
+        Random random = new Random();
+        String id = String.format("%04d", random.nextInt(10000));
+
+        final String username = "teamcodexfit@gmail.com";
+        final String password = "Codex123";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("teamcodexfit@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(receiverEmail));
+            message.setSubject("Welcome to My Chemistry tutor");
+            message.setText("Dear sir/ madam,\nThank your for login to out site. This is your verification code... "+ id);
+
+            Transport.send(message);
+
+            out.print(id);
+
+        } catch (MessagingException e) {
+            out.print("AB");
         }
     }
 }
