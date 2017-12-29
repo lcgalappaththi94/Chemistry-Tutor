@@ -71,9 +71,6 @@
                 if (request.readyState == 4) {
                     if (request.status == 200) {
                         verificationCode = request.responseText;
-                        if (verificationCode = "AB"){
-                            window.alert("Something went wrong please check your email")
-                        }
                     }
                 }
             }

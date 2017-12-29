@@ -166,7 +166,7 @@ public class AuthorController {
             out.print(id);
 
         } catch (MessagingException e) {
-            out.print("AB");
+
         }
     }
 }
