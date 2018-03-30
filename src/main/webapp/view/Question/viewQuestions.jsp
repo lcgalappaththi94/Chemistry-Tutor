@@ -22,6 +22,7 @@
     <%
         Question question = (Question) request.getAttribute("ques");
         ArrayList<Answer> answers = (ArrayList<Answer>) request.getAttribute("anw");
+        String media = question.getMedia().replace("open","uc");
     %>
 
     <div class="panel panel-primary">
@@ -99,10 +100,7 @@
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">වෙනත් මාධ්‍ය:</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" name="media" value="<%out.print(question.getMedia());%>"
-                               placeholder="ප්‍රශ්නයට අදාල video, Gif, පින්තුර , වෙනත්  මාධ්‍යය " readonly/>
-                    </div>
+                    <img src="<%out.print(media);%>" height="200" width="300"></img>
                 </div>
 
                 <div class="form-group">

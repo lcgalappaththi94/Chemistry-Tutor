@@ -123,7 +123,7 @@
                     <label class="control-label col-sm-2">වෙනත් මාධ්‍ය:</label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" name="media" value="<%out.print(question.getMedia());%>"
-                               placeholder="ප්‍රශ්නයට අදාල video, Gif, පින්තුර , වෙනත්  මාධ්‍යය "></input>
+                               placeholder="ප්‍රශ්නයට අදාල Gif, පින්තුර"></input>
                     </div>
                 </div>
 

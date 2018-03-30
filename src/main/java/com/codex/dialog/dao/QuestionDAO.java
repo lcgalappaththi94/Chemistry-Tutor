@@ -37,4 +37,6 @@ public interface QuestionDAO {
     public String get40Ques() throws ClassNotFoundException, SQLException;
 
     public String get50Ques() throws ClassNotFoundException, SQLException;
+
+    public String getVarQues(String quesNo, String username) throws ClassNotFoundException, SQLException;
 }

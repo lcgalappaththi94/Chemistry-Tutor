@@ -203,6 +203,13 @@ public class QuestionController {
         return json;
     }
 
+    @RequestMapping(value = "varQues", method = RequestMethod.GET)
+    @ResponseBody
+    public String getVarQues(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+        String json = questionDAO.getVarQues(request.getParameter("quesNo") , request.getParameter("username"));
+        return json;
+    }
+
     /*@RequestMapping(value = "topic", method = RequestMethod.GET)
     public String addTopic(HttpServletRequest request) throws ClassNotFoundException, SQLException {
         return "Question/newTopic";

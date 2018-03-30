@@ -55,23 +55,18 @@ public class AuthorJDBCTemplate implements AuthorDAO {
     }
 
     public String authenticate(String password, String email) throws SQLException, ClassNotFoundException {
-
         String sql = "select authorId,password,(select Password(?))as NewPassword from Author where email = ? ";
-        //question = jdbcTemplateObject.queryForObject(sql, new QuestionMapper(),quesNo);
-        System.out.println(email+" "+password+" a");
         Password pass = null;
         try {
             pass = jdbcTemplateObject.queryForObject(sql, new PasswordMapper(), password, email);
         }catch (EmptyResultDataAccessException ex){
             return "";
         }
-
         if (pass.getPassword().equals(pass.getNewPassword())) {
             return pass.getAuthId();
         } else {
             return "";
         }
-
     }
 
     @Override

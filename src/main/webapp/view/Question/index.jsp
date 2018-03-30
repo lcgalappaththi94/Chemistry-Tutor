@@ -152,7 +152,7 @@
                             </div>
                         </div>
                         <div class="form-bottom">
-                            <form name="sign" action="/addAuther" method="post" class="registration-form" onsubmit="return onSubmitCodeCheck();">
+                            <form name="sign" action="/addAuther" method="post" class="registration-form" onsubmit="onSubmitCodeCheck();">
                                 <div class="form-group">
                                     <label class="sr-only" for="form-first-name">First name</label>
                                     <input type="text" name="name" placeholder="Enter name..."

@@ -188,9 +188,32 @@ public class QuestionJDBCTemplate implements QuestionDAO {
     @Override
     public String get50Ques() throws ClassNotFoundException, SQLException {
         String sql = "SELECT * FROM `Question` ORDER BY RAND() LIMIT 50";
+        //SELECT * FROM Question WHERE qNo NOT in (SELECT qNo FROM DoneQuestion WHERE username=2) ORDER BY RAND() LIMIT 50
         String sql1 = "SELECT * FROM `Answer` WHERE qNo=?";
         ArrayList<Question> questions;
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper());
+
+        ArrayList<Answer> allAnswers = new ArrayList<>();
+        for (Question q:questions) {
+            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(),q.getQuesNo());
+            allAnswers.addAll(answersToQue);
+        }
+
+        Gson gson = new Gson();
+        String json1 = gson.toJson(questions);
+        String json2 = gson.toJson(allAnswers);
+        String finalString = json1 +"@"+json2;
+
+        return finalString;
+    }
+
+    @Override
+    public String getVarQues(String quesNo, String username) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT * FROM Question WHERE qNo NOT in (SELECT qNo FROM DoneQuestion WHERE username=?) ORDER BY RAND() LIMIT " + quesNo;
+        //SELECT * FROM Question WHERE qNo NOT in (SELECT qNo FROM DoneQuestion WHERE username=2) ORDER BY RAND() LIMIT 50
+        String sql1 = "SELECT * FROM `Answer` WHERE qNo=?";
+        ArrayList<Question> questions;
+        questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper(), username);
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
         for (Question q:questions) {

@@ -38,4 +38,7 @@
         <property name="dataSource" ref="DataSource"/>
     </bean>
 
+    <bean id="studentJDBCTemplate" class="com.codex.dialog.jdbcTemplate.StudentJDBCTemplate">
+        <property name="dataSource" ref="DataSource"/>
+    </bean>
 </beans>

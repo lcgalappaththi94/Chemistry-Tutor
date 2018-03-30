@@ -29,7 +29,7 @@ public class AuthorController {
     AuthorDAO authorDAO;
 
     @RequestMapping(value = "addAuther", method = RequestMethod.POST)
-    public String addQuestion(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public String addQuestion(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         Auther auther = new Auther("", request.getParameter("designation"), request.getParameter("form-email"), request.getParameter("password"), request.getParameter("name"));
         boolean isAdded = false;
         boolean isAuthExists = authorDAO.isAuther(request.getParameter("form-email"));
@@ -58,7 +58,7 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "auth", method = RequestMethod.POST)
-    public String authenticateAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public String authenticateAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
 
@@ -77,7 +77,7 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "getAuthor", method = RequestMethod.POST)
-    public String getAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public String getAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         HttpSession session = request.getSession();
         String authId = (String) session.getAttribute("authId");
 
@@ -94,7 +94,7 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "updateAuther", method = RequestMethod.POST)
-    public String updateAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public String updateAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         HttpSession session = request.getSession();
         Auther auther = new Auther(request.getParameter("authId"),request.getParameter("designation"),request.getParameter("email"),request.getParameter("password"),request.getParameter("name"));
         if (!auther.getPassword().equals("")) {
@@ -127,46 +127,42 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "verif", method = RequestMethod.GET)
-    public void confirmEmail(HttpServletRequest request ,HttpServletResponse response) throws SQLException, ClassNotFoundException, IOException {
-
+    public void confirmEmail(HttpServletRequest request ,HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-
-        String receiverEmail = request.getParameter("email");
-        //Creating 4 digit random code
         Random random = new Random();
-        String id = String.format("%04d", random.nextInt(10000));
-
-        final String username = "teamcodexfit@gmail.com";
-        final String password = "Codex123";
 
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
 
-        Session session = Session.getInstance(props,
+        final String from = "teamfitcodex@gmail.com";
+        final String password = "codexfamily123";
+        final String to = request.getParameter("email");
+        final String id = String.format("%04d", random.nextInt(10000));
+        //get Session
+        Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
+                        return new PasswordAuthentication(from,password);
                     }
                 });
-
+        //compose message
         try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("teamcodexfit@gmail.com"));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(receiverEmail));
+            MimeMessage message = new MimeMessage(session);
+            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
             message.setSubject("Welcome to My Chemistry tutor");
-            message.setText("Dear sir/ madam,\nThank your for login to out site. This is your verification code... "+ id);
-
+            message.setText("Dear sir/ madam, Thank your for login to out site. This is your verification code..." + id);
+            //send message
             Transport.send(message);
-
+            System.out.println("message sent successfully");
             out.print(id);
-
-        } catch (MessagingException e) {
-
+        } catch (MessagingException e) {throw new RuntimeException(e);}
+        finally {
+            out.close();
         }
     }
 }
