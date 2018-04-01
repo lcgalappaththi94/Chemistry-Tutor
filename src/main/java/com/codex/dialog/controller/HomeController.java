@@ -1,6 +1,7 @@
 package com.codex.dialog.controller;
 
 import com.codex.dialog.dao.QuestionDAO;
+import com.codex.dialog.model.QueAuther;
 import com.codex.dialog.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,25 @@ public class HomeController {
         String topicId = (String) session.getAttribute("topicId");
         String authId = (String) session.getAttribute("authId");
 
-        System.out.println(authId+ "" +topicId);
+        try {
+            if (authId.equals(null)) {
+                return "";
+            }
+
+        } catch (NullPointerException ex) {
+            return "";
+        }
+        ArrayList<QueAuther> questions = questionDAO.getAllQuestions();
+        request.setAttribute("quesList", questions);
+        return "Question/allQuestions";
+    }
+
+    @RequestMapping(value = "allQuesByMe", method = RequestMethod.GET)
+    public String getAllQuesByMe(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+        HttpSession session = request.getSession();
+        String topicId = (String) session.getAttribute("topicId");
+        String authId = (String) session.getAttribute("authId");
+
         try {
             if (authId.equals(null)) {
                 return "";
@@ -62,7 +81,7 @@ public class HomeController {
         }
         ArrayList<Question> questions = questionDAO.getAllQuestionsToAuther(authId);
         request.setAttribute("quesList", questions);
-        return "Question/allQuestions";
+        return "Question/allQuestionsByMe";
     }
 
     // Not implemented

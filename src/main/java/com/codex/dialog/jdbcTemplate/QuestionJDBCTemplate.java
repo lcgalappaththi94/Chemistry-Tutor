@@ -2,9 +2,11 @@ package com.codex.dialog.jdbcTemplate;
 
 import com.codex.dialog.dao.QuestionDAO;
 import com.codex.dialog.mapper.AnswerMapper;
+import com.codex.dialog.mapper.QueAutherMapper;
 import com.codex.dialog.mapper.QuestionMapper;
 import com.codex.dialog.mapper.QuestionTopicMapper;
 import com.codex.dialog.model.Answer;
+import com.codex.dialog.model.QueAuther;
 import com.codex.dialog.model.Question;
 import com.google.gson.Gson;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -100,6 +102,14 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         String sql = "select * from Question where authorId = ?";
         ArrayList<Question> questions;
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper(), autherId);
+        return questions;
+    }
+
+    @Override
+    public ArrayList<QueAuther> getAllQuestions() throws ClassNotFoundException, SQLException {
+        String sql = "select * from Question,Author where Question.authorId = Author.authorId";
+        ArrayList<QueAuther> questions;
+        questions = (ArrayList<QueAuther>) jdbcTemplateObject.query(sql, new QueAutherMapper());
         return questions;
     }
 

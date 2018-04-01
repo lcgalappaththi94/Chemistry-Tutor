@@ -126,20 +126,18 @@ public class AuthorController {
         }
     }
 
-    @RequestMapping(value = "verif", method = RequestMethod.GET)
+    @RequestMapping(value = "verify", method = RequestMethod.GET)
     public void confirmEmail(HttpServletRequest request ,HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         Random random = new Random();
 
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+        props.put("mail.smtp.port", "587"); //TLS Port
+        props.put("mail.smtp.auth", "true"); //enable authentication
+        props.put("mail.smtp.starttls.enable", "true"); //enable
 
-        final String from = "teamfitcodex@gmail.com";
+        final String from = "tcodex7@gmail.com";
         final String password = "codexfamily123";
         final String to = request.getParameter("email");
         final String id = String.format("%04d", random.nextInt(10000));
@@ -154,8 +152,8 @@ public class AuthorController {
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
-            message.setSubject("Welcome to My Chemistry tutor");
-            message.setText("Dear sir/ madam, Thank your for login to out site. This is your verification code..." + id);
+            message.setSubject("Welcome");
+            message.setText("Please use this code to verify. " + id);
             //send message
             Transport.send(message);
             System.out.println("message sent successfully");

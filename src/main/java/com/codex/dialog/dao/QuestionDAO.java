@@ -1,6 +1,7 @@
 package com.codex.dialog.dao;
 
 import com.codex.dialog.model.Answer;
+import com.codex.dialog.model.QueAuther;
 import com.codex.dialog.model.Question;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public interface QuestionDAO {
     public ArrayList<Question> getAllQuestionsToAuther(String autherId) throws ClassNotFoundException, SQLException;
 
     public Question getAllQuestions_Topic(String quesId) throws ClassNotFoundException, SQLException;
+
+    public ArrayList<QueAuther> getAllQuestions() throws ClassNotFoundException, SQLException;
 
     public Question getQuestion(String quesId) throws ClassNotFoundException, SQLException;
 

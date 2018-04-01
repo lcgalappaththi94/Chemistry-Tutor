@@ -23,8 +23,11 @@
     <div class="panel panel-primary">
         <div class="panel-heading"><h1>My Dashboard</h1></div>
         <div class="panel-body">
+            <form method="get" action="allQuesByMe">
+                <button class="btn btn-info" value="තමා විසින් එක්කල ප්‍රශ්න සියල්ල">තමා විසින් එක්කල ප්‍රශ්න සියල්ල</button>
+            </form>
             <form method="get" action="allQues">
-                <button class="btn btn-info" value="ප්‍රශ්න සියල්ල">ප්‍රශ්න සියල්ල</button>
+                <button class="btn btn-primary" value="ප්‍රශ්න සියල්ල">ප්‍රශ්න සියල්ල</button>
             </form>
             <form method="get" action="addQ">
                 <button class="btn btn-success" value="නව ප්‍රශ්නයක් එක් කීරීමට">නව ප්‍රශ්නයක් එක් කීරීමට</button>

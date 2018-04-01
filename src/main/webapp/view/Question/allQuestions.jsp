@@ -1,6 +1,5 @@
-<%@ page import="com.codex.dialog.model.Question" %>
-<%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.codex.dialog.model.QueAuther" %>
 <%@page pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,33 +25,26 @@
         <table id="services" class="table table-striped table-hover table-users">
             <thead>
             <tr>
-                <th>ප්‍රශ්නය</th><th>Search</th><th>Update</th> <th>Delete</th>
+                <th>ප්‍රශ්නය</th><th>Search</th>
             </tr>
             </thead>
             <tbody>
             <%
-                ArrayList<Question> quesList = (ArrayList<Question>) request.getAttribute("quesList");
-
-                for (Question question : quesList) {
+                ArrayList<QueAuther> quesList = (ArrayList<QueAuther>) request.getAttribute("quesList");
+                for (QueAuther question : quesList) {
             %>
             <tr class="add-row">
                     <%
                     String q = question.getQuesNo();
-                %>
-                <td class="ques"><% out.print(question.getQues()); %></td>
+                    StringBuilder questionWithAuthor = new StringBuilder(question.getQues());
+                    questionWithAuthor.append("\n").append("- ").
+                    append(question.getDesig()).append(".").append(question.getAutherName()).append(" -");
+                    %>
+                <td class="ques"><% out.print(questionWithAuthor); %></td>
                         <td> <form method="post" action="/viewQues">
                             <input type="hidden" name="quesNo" value="<%=q%>">
                             <button class="btn btn-info" type="submit">Search</button>
                         </form> </td>
-                        <td> <form method="post" action="/searchQues">
-                            <input type="hidden" name="quesNo" value="<%=q%>">
-                            <button class="btn btn-info" type="submit">Update</button>
-                        </form> </td>
-                        <td> <form method="post" onsubmit="return confirm('Do you really want to delete the Question ?');" action="/deleteQues">
-                            <input type="hidden" name="quesNo" value="<%=q%>">
-                            <button class="btn btn-info" type="submit">Delete</button>
-                        </form> </td>
-
                     <%}%>
             </tbody>
         </table>

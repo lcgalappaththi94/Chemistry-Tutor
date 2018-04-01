@@ -63,7 +63,7 @@
 
         function veriCode() {
             var email = document.getElementById("form-email").value;
-            var url = "verif?email="+email;
+            var url = "verify?email="+email;
             var request = createXMLHttpRequest();
             request.open("GET", url, true);
             request.send(null);
@@ -152,7 +152,7 @@
                             </div>
                         </div>
                         <div class="form-bottom">
-                            <form name="sign" action="/addAuther" method="post" class="registration-form" onsubmit="onSubmitCodeCheck();">
+                            <form name="sign" action="/addAuther" method="post" class="registration-form" onsubmit="return onSubmitCodeCheck();">
                                 <div class="form-group">
                                     <label class="sr-only" for="form-first-name">First name</label>
                                     <input type="text" name="name" placeholder="Enter name..."
