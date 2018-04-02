@@ -11,16 +11,18 @@
     <div class="panel panel-primary">
         <div class="panel-heading"><h1>My Dashboard</h1></div>
         <div class="panel-body">
-            <form method="get" action="allQuesByMe">
+            <form method="GET" action="allQuesByMe">
                 <button class="btn btn-info" value="තමා විසින් එක්කල ප්‍රශ්න සියල්ල">තමා විසින් එක්කල ප්‍රශ්න සියල්ල</button>
+                <input type="hidden" name="currentPage" value="1"/>
             </form>
-            <form method="get" action="allQues">
+            <form method="GET" action="allQues">
                 <button class="btn btn-primary" value="ප්‍රශ්න සියල්ල">ප්‍රශ්න සියල්ල</button>
+                <input type="hidden" name="currentPage" value="1"/>
             </form>
-            <form method="get" action="addQ">
+            <form method="GET" action="addQ">
                 <button class="btn btn-success" value="නව ප්‍රශ්නයක් එක් කීරීමට">නව ප්‍රශ්නයක් එක් කීරීමට</button>
             </form>
-            <form method="get" action="topic">
+            <form method="GET" action="topic">
                 <button class="btn btn-danger" value="නව මාතෘකාවක් එක් කීරීමට">නව මාතෘකාවක් එක් කීරීමට</button>
             </form>
             <form method="POST" action="getAuthor">
