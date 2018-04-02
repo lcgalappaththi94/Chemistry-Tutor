@@ -11,12 +11,16 @@ public class Question {
     private String media;
     private String corAnw;
     private String diff;
-
+    private String ex;
+    private String exImage;
+    private String exVed;
+    private String ref;
 
     public Question() {
     }
 
-    public Question(String quesNo, String authId, String topicId, String ques, String media, String corAnw, String diff) {
+    public Question(String quesNo, String authId, String topicId, String ques, String media,
+                    String corAnw, String diff, String ex, String exImage, String exVed, String ref) {
         this.setQuesNo(quesNo);
         this.setAuthId(authId);
         this.setTopicId(topicId);
@@ -24,6 +28,10 @@ public class Question {
         this.setMedia(media);
         this.setCorAnw(corAnw);
         this.setDiff(diff);
+        this.setEx(ex);
+        this.setExImage(exImage);
+        this.setExVed(exVed);
+        this.setRef(ref);
     }
 
     public String getQuesNo() {
@@ -80,5 +88,37 @@ public class Question {
 
     public void setDiff(String diff) {
         this.diff = diff;
+    }
+
+    public String getEx() {
+        return ex;
+    }
+
+    public void setEx(String ex) {
+        this.ex = ex;
+    }
+
+    public String getExImage() {
+        return exImage;
+    }
+
+    public void setExImage(String exImage) {
+        this.exImage = exImage;
+    }
+
+    public String getExVed() {
+        return exVed;
+    }
+
+    public void setExVed(String exVed) {
+        this.exVed = exVed;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
     }
 }

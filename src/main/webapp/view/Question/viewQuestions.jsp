@@ -23,6 +23,7 @@
         Question question = (Question) request.getAttribute("ques");
         ArrayList<Answer> answers = (ArrayList<Answer>) request.getAttribute("anw");
         String media = question.getMedia().replace("open","uc");
+        String exImage = question.getExImage().replace("open","uc");
     %>
 
     <div class="panel panel-primary">
@@ -52,6 +53,12 @@
                         <textarea class="form-control" rows="4" cols="50" name="ques"
                                   placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න"
                                   readonly><% out.print(question.getQues()); %></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">ප්‍රශ්නයට අදාල වෙනත් මාධ්‍ය:</label>
+                    <div class="col-sm-6">
+                        <img src="<%out.print(media);%>" height="200" width="300">
                     </div>
                 </div>
 
@@ -97,10 +104,38 @@
                                readonly/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" rows="6" cols="75" name="ex"
+                               placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්" value="<% out.print(question.getEx());%>"/>
+                    </textarea>
+                    </div>
+                </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-2">වෙනත් මාධ්‍ය:</label>
-                    <img src="<%out.print(media);%>" height="200" width="300"></img>
+                    <label class="control-label col-sm-2">පැහැදිලි කිරීමට අදාල රූප:</label>
+                    <div class="col-sm-6">
+                        <img src="<%out.print(exImage);%>" height="200" width="300"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">පැහැදිලි කිරීමට අදාල Video:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="exVed"
+                               placeholder="ප්‍රශ්නයට අදාල Gif, පින්තුර link එක. අත්‍යාවශ්‍ය නැත."
+                               value="<% out.print(question.getExVed());%>"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Reference:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="ref"
+                               placeholder="ප්‍රශ්නයට අදාල reference link එක. අත්‍යාවශ්‍ය නැත."
+                               value="<% out.print(question.getRef());%>"/>
+                    </div>
                 </div>
 
                 <div class="form-group">

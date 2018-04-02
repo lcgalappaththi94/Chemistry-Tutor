@@ -27,9 +27,12 @@ public class QuestionJDBCTemplate implements QuestionDAO {
     }
 
     public boolean addQuestion(Question question, ArrayList<Answer> answers) throws ClassNotFoundException, SQLException {
-        String sql = "Insert into Question (qNo,topicId,authorId,question,corAnwrId,difficulty,media) values ( ? , ? , ? , ? , ? ,? ,?)";
+        String sql = "Insert into Question (qNo,topicId,authorId,question,corAnwrId,difficulty,media,ex,exImage," +
+                "exVed,ref) values ( ? , ? , ? , ? , ? ,? , ?, ?, ?, ?, ?)";
         boolean isAns = false;
-        boolean isQues = jdbcTemplateObject.update(sql, question.getQuesNo(), question.getTopicId(), question.getAuthId(), question.getQues(), question.getCorAnw(), question.getDiff(), question.getMedia()) > 0;
+        boolean isQues = jdbcTemplateObject.update(sql, question.getQuesNo(), question.getTopicId(),
+                question.getAuthId(), question.getQues(), question.getCorAnw(), question.getDiff(),
+                question.getMedia(),question.getEx(),question.getExImage(),question.getExVed(),question.getRef()) > 0;
         for (Answer answer : answers) {
             isAns = false;
             String sql2 = "Insert into Answer values ( ? , ? , ?)";
@@ -53,8 +56,12 @@ public class QuestionJDBCTemplate implements QuestionDAO {
 
     @Override
     public boolean updateQuestion(Question question) throws ClassNotFoundException, SQLException {
-        String sql = "UPDATE Question SET question= ?,topicId=?,corAnwrId=?,difficulty=?,media=?  WHERE qNo=?";
-        return (jdbcTemplateObject.update(sql, question.getQues(), Integer.parseInt(question.getTopicId()), Integer.parseInt(question.getCorAnw()), question.getDiff(), question.getMedia(), Integer.parseInt(question.getQuesNo())) > 0);
+        String sql = "UPDATE Question SET question= ?,topicId=?,corAnwrId=?,difficulty=?,media=?,ex=?,exImage=?,exVed=?," +
+                "ref=? WHERE qNo=?";
+        return (jdbcTemplateObject.update(sql, question.getQues(), Integer.parseInt(question.getTopicId()),
+                Integer.parseInt(question.getCorAnw()), question.getDiff(), question.getMedia(),
+                question.getEx(),question.getExImage(),question.getExVed(), question.getRef(),
+                Integer.parseInt(question.getQuesNo())) > 0);
     }
 
     @Override
@@ -76,7 +83,8 @@ public class QuestionJDBCTemplate implements QuestionDAO {
 
     @Override
     public Question getAllQuestions_Topic(String qNo) throws ClassNotFoundException, SQLException {
-        String sql = "select qNo,authorId,topic,question,media,corAnwrId,difficulty from Question q,Topic t where q.topicId=t.topicId  && qNo=?";
+        String sql = "select qNo,authorId,topic,question,media,corAnwrId,difficulty,ex,exImage," +
+                "exVed,ref from Question q,Topic t where q.topicId=t.topicId  && qNo=?";
         Question question;
         question = jdbcTemplateObject.queryForObject(sql, new QuestionTopicMapper(), qNo);
         return question;

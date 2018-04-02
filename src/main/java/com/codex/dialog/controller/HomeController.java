@@ -126,5 +126,4 @@ public class HomeController {
         session.removeAttribute("topicId");
         return "Question/index";
     }
-
 }
