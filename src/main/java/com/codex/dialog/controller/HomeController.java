@@ -5,6 +5,7 @@ import com.codex.dialog.model.QueAuther;
 import com.codex.dialog.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -47,10 +48,13 @@ public class HomeController {
     }
 
     @RequestMapping(value = "allQues", method = RequestMethod.GET)
-    public String getAllQues(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    public String getAllQues(HttpServletRequest request,ModelMap model) throws SQLException, ClassNotFoundException {
+        int pageSize=10;
+
         HttpSession session = request.getSession();
         String topicId = (String) session.getAttribute("topicId");
         String authId = (String) session.getAttribute("authId");
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 
         try {
             if (authId.equals(null)) {
@@ -61,15 +65,26 @@ public class HomeController {
             return "";
         }
         ArrayList<QueAuther> questions = questionDAO.getAllQuestions();
-        request.setAttribute("quesList", questions);
+
+        int length = questions.size();
+        ArrayList<QueAuther> questionsList = new ArrayList<>();
+        for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + pageSize && i < questions.size(); i++) {
+            questionsList.add(questions.get(i));
+        }
+        model.put("length",length);
+        model.put("currentPage",currentPage);
+
+        request.setAttribute("quesList", questionsList);
         return "Question/allQuestions";
     }
 
     @RequestMapping(value = "allQuesByMe", method = RequestMethod.GET)
-    public String getAllQuesByMe(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    public String getAllQuesByMe(HttpServletRequest request,ModelMap model) throws SQLException, ClassNotFoundException {
+        int pageSize=10;
         HttpSession session = request.getSession();
         String topicId = (String) session.getAttribute("topicId");
         String authId = (String) session.getAttribute("authId");
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 
         try {
             if (authId.equals(null)) {
@@ -80,7 +95,16 @@ public class HomeController {
             return "";
         }
         ArrayList<Question> questions = questionDAO.getAllQuestionsToAuther(authId);
-        request.setAttribute("quesList", questions);
+
+        int length = questions.size();
+        ArrayList<Question> questionsList = new ArrayList<>();
+        for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + pageSize && i < questions.size(); i++) {
+            questionsList.add(questions.get(i));
+        }
+        model.put("length",length);
+        model.put("currentPage",currentPage);
+
+        request.setAttribute("quesList", questionsList);
         return "Question/allQuestionsByMe";
     }
 
