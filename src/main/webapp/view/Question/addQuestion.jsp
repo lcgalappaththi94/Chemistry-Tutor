@@ -93,6 +93,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-sm-2">ප්‍රශ්නයට අදාල වෙනත් මාධ්‍ය:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="media"
+                               placeholder="ප්‍රශ්නයට අදාල Gif, පින්තුර. අත්‍යාවශ්‍ය නැත."/>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 1:</label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" name="anw1" placeholder="පලවන පිළිතුර" required/>
@@ -127,10 +135,34 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-2">වෙනත් මාධ්‍ය:</label>
+                    <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="media"
-                               placeholder="ප්‍රශ්නයට අදාල Gif, පින්තුර"/>
+                        <textarea class="form-control" rows="6" cols="75" name="ex"
+                                  placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්"> </textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">පැහැදිලි කිරීමට අදාල රූප:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="exImage"
+                               placeholder="ප්‍රශ්නයට අදාල Gif, පින්තුර link. අත්‍යාවශ්‍ය නැත"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">පැහැදිලි කිරීමට අදාල Video:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="exVed"
+                               placeholder="ප්‍රශ්නයට අදාල Gif, පින්තුර link එක. අත්‍යාවශ්‍ය නැත."/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Reference:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="ref"
+                               placeholder="ප්‍රශ්නයට අදාල reference link එක. අත්‍යාවශ්‍ය නැත."/>
                     </div>
                 </div>
 

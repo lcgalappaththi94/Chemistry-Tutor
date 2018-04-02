@@ -59,7 +59,10 @@ public class QuestionController {
         System.out.println(new String(bytes, "UTF-8"));
 
         session.setAttribute(topicId, null);
-        Question question = new Question("" + nQuesId, authId, topicId, request.getParameter("ques"), request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff"));
+        Question question = new Question("" + nQuesId, authId, topicId, request.getParameter("ques"),
+                request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff") ,
+                request.getParameter("ex"), request.getParameter("exImage"), request.getParameter("exVed"),
+                request.getParameter("ref"));
 
         ArrayList<Answer> answers = new ArrayList<Answer>();
         for (int i = 1; i <= 5; i++) {
@@ -115,11 +118,13 @@ public class QuestionController {
         } catch (NullPointerException ex) {
             return "";
         }
-
         String myparam = request.getParameter("ques");
         String qNo = request.getParameter("qNo");
 
-        Question question = new Question(qNo, authId, topicId, request.getParameter("ques"), request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff"));
+        Question question = new Question(qNo, authId, topicId, request.getParameter("ques"),
+                request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff"),
+                request.getParameter("ex"),request.getParameter("exImage"), request.getParameter("exVed"),
+                request.getParameter("ref"));
 
         ArrayList<Answer> answers = new ArrayList<Answer>();
         Answer answer;
