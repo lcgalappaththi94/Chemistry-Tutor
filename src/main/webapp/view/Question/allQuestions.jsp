@@ -130,7 +130,6 @@
         <span class="form-control" id="pageDetail"></span>
     </div>
 </div>
-
 </body>
 
 <div id="footer">

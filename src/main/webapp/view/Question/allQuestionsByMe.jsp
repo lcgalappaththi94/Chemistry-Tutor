@@ -1,14 +1,13 @@
 <%@ page import="com.codex.dialog.model.Question" %>
-<%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
 <%@page pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>All Questions</title>
+    <title>All Questions By Me</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="javascript">
+    <script type="text/javascript">
         var currentPage = 0;
         var length = 0;
         var pages = 0;
