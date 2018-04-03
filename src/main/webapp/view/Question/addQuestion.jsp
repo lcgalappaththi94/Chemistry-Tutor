@@ -87,6 +87,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නය අතුලත් කරන්න</label>
                     <div class="col-sm-6">
+                        </textarea>
                         <textarea class="form-control" rows="6" cols="75" name="ques"
                                   placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න" required></textarea>
                     </div>
@@ -138,7 +139,7 @@
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
                     <div class="col-sm-6">
                         <textarea class="form-control" rows="6" cols="75" name="ex"
-                                  placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්"> </textarea>
+                                  placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්"></textarea>
                     </div>
                 </div>
 

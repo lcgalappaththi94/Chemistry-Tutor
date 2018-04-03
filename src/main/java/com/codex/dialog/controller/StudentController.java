@@ -62,13 +62,19 @@ public class StudentController {
     public String updateScore(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         Gson gson = new Gson();
         ArrayList<Double> questions = gson.fromJson(request.getParameter("questions"), ArrayList.class);
-        if (studentDAO.updateScore(request.getParameter("username"), request.getParameter("score"), questions)){
-            ArrayList<Student> students = studentDAO.getLeaderbord();
-            String jsonArray = gson.toJson(students);
-            return jsonArray;
-        } else {
-            return "false";
-        }
+        studentDAO.updateScore(request.getParameter("username"), request.getParameter("score"), questions);
+        ArrayList<Student> students = studentDAO.getLeaderbord();
+        String jsonArray = gson.toJson(students);
+        return jsonArray;
+    }
+
+    @RequestMapping(value = "getLeaderbord", method = RequestMethod.GET)
+    @ResponseBody
+    public String getLeaderbord(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+        Gson gson = new Gson();
+        ArrayList<Student> students = studentDAO.getLeaderbord();
+        String jsonArray = gson.toJson(students);
+        return jsonArray;
     }
 
     @RequestMapping(value = "authenticate", method = RequestMethod.POST)

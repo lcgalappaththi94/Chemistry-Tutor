@@ -42,6 +42,11 @@ public class StudentJDBCTemplate implements StudentDAO {
             updatedScore = Integer.parseInt(student.getScore()) + Integer.parseInt(score);
             isDoneUpdated = (jdbcTemplateObject.update(sql2, username, (int)question) > 0);
         }
+        if (questions.size() == 0){
+            Student student = viewAccount(username);
+            updatedScore = Integer.parseInt(student.getScore()) + Integer.parseInt(score);
+            isDoneUpdated = true;
+        }
         return (jdbcTemplateObject.update(sql1, updatedScore, username) > 0) && isDoneUpdated;
     }
 
