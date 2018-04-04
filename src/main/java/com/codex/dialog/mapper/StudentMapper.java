@@ -12,7 +12,7 @@ public class StudentMapper implements RowMapper<Student> {
     public Student mapRow(ResultSet rs, int i) throws SQLException {
         Student student = new Student(rs.getString("username"),rs.getString("email"),
                 rs.getString("password"),rs.getString("contactNo"),
-                rs.getString("score"));
+                rs.getString("score"),rs.getString("login"));
         return student;
     }
 }

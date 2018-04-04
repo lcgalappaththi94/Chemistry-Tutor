@@ -57,6 +57,17 @@ public class StudentController {
         }
     }
 
+    @RequestMapping(value = "updateLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateLogin(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+        HttpSession session = request.getSession();
+        if (studentDAO.updateLoginTime(request.getParameter("username"), request.getParameter("login"))){
+            return "true";
+        } else{
+            return "false";
+        }
+    }
+
     @RequestMapping(value = "updateScore", method = RequestMethod.POST)
     @ResponseBody
     public String updateScore(HttpServletRequest request) throws SQLException, ClassNotFoundException {

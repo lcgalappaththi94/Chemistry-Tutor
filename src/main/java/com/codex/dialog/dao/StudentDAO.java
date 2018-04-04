@@ -14,6 +14,7 @@ public interface StudentDAO {
             throws ClassNotFoundException, SQLException;
     public boolean updateDetails(String username, String email, String password, String contactNo)
             throws ClassNotFoundException, SQLException;
+    public boolean updateLoginTime(String username, String login) throws ClassNotFoundException, SQLException;
     public boolean checkUsername(String username) throws ClassNotFoundException, SQLException;
     public boolean checkPass(String username, String password) throws ClassNotFoundException, SQLException;
     public Student viewAccount(String username) throws ClassNotFoundException, SQLException;

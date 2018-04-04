@@ -26,8 +26,8 @@ public class StudentJDBCTemplate implements StudentDAO {
 
     @Override
     public boolean addStudent(String username, String email, String password, String contactNo) throws ClassNotFoundException, SQLException {
-        String sql = "Insert into Student (username,email,password,contactNo,score) values (?,?,(select Password (?)),?,?)";
-        return (jdbcTemplateObject.update(sql, username, email, password, contactNo, 0) > 0);
+        String sql = "Insert into Student (username,email,password,contactNo,score,login) values (?,?,(select Password (?)),?,?,?)";
+        return (jdbcTemplateObject.update(sql, username, email, password, contactNo, 0, "") > 0);
     }
 
     @Override
@@ -54,6 +54,12 @@ public class StudentJDBCTemplate implements StudentDAO {
     public boolean updateDetails(String username, String email, String password, String contactNo) throws ClassNotFoundException, SQLException {
         String sql = "UPDATE Student SET email=?,password=(select Password (?)),contactNo=? WHERE username=?";
         return jdbcTemplateObject.update(sql,email, password, contactNo, username) > 0;
+    }
+
+    @Override
+    public boolean updateLoginTime(String username, String login) throws ClassNotFoundException, SQLException {
+        String sql = "UPDATE Student SET login=? WHERE username=?";
+        return jdbcTemplateObject.update(sql, login, username) > 0;
     }
 
     @Override
@@ -97,7 +103,7 @@ public class StudentJDBCTemplate implements StudentDAO {
 
     @Override
     public ArrayList<Student> getLeaderbord() throws ClassNotFoundException, SQLException {
-        String sql = "select username,email,password,contactNo,score from Student ORDER BY score DESC";
+        String sql = "select username,email,password,contactNo,score,login from Student ORDER BY score DESC";
         Student student;
         try {
             ArrayList<Student> studentList = (ArrayList<Student>) jdbcTemplateObject.query(sql, new StudentMapper());

@@ -6,16 +6,15 @@ public class Student {
     private String password;
     private String contactNo;
     private String score;
+    private String login;
 
-    public Student(String username, String email, String password, String contactNo, String score) {
+    public Student(String username, String email, String password, String contactNo, String score, String login) {
         this.setUsername(username);
         this.setEmail(email);
         this.setPassword(password);
         this.setContactNo(contactNo);
         this.setScore(score);
-    }
-
-    public Student() {
+        this.setLogin(login);
     }
 
     public String getUsername() {
@@ -56,5 +55,13 @@ public class Student {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
