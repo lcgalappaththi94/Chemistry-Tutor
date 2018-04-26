@@ -13,12 +13,12 @@ public class Test {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
 
-        String dateStart = "2018/02/03 02:48:47";
-        String dateStop = "2018/02/03 11:48:47";
-//        String dateStop = dateFormat.format(date);
+        String dateStart = "2018/04/07 12:48:47";
+        //String dateStop = "02/04/2018 23:08:07";
+        String dateStop = dateFormat.format(date);
 
         //HH converts hour in 24 hours format (0-23), day calculation
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         Date d1 = null;
         Date d2 = null;
@@ -31,8 +31,6 @@ public class Test {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
         //in milliseconds
         long diff = d2.getTime() - d1.getTime();
 
@@ -41,7 +39,7 @@ public class Test {
         final long diffHours = diff / (60 * 60 * 1000) % 24;
         final long diffDays = diff / (24 * 60 * 60 * 1000);
 
-
+        System.out.println(dateStop);
         System.out.println(diffDays);
         System.out.println(diffHours);
         System.out.println(diffMinutes);

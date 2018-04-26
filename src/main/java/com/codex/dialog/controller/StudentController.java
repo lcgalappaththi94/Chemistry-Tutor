@@ -1,6 +1,7 @@
 package com.codex.dialog.controller;
 
 import com.codex.dialog.dao.StudentDAO;
+import com.codex.dialog.model.Leaderboard;
 import com.codex.dialog.model.Student;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class StudentController {
         boolean isStudentExists = studentDAO.checkUsername(request.getParameter("username"));
         if (!isStudentExists) {
             studentDAO.addStudent(request.getParameter("username"), request.getParameter("email"),
-                    request.getParameter("password"), request.getParameter("contactNo"));
+                    request.getParameter("password"), request.getParameter("contactNo"),
+                    request.getParameter("login"));
             return "true";
         } else {
             return "false";
@@ -60,7 +62,6 @@ public class StudentController {
     @RequestMapping(value = "updateLogin", method = RequestMethod.POST)
     @ResponseBody
     public String updateLogin(HttpServletRequest request) throws SQLException, ClassNotFoundException {
-        HttpSession session = request.getSession();
         if (studentDAO.updateLoginTime(request.getParameter("username"), request.getParameter("login"))){
             return "true";
         } else{
@@ -74,7 +75,7 @@ public class StudentController {
         Gson gson = new Gson();
         ArrayList<Double> questions = gson.fromJson(request.getParameter("questions"), ArrayList.class);
         studentDAO.updateScore(request.getParameter("username"), request.getParameter("score"), questions);
-        ArrayList<Student> students = studentDAO.getLeaderbord();
+        ArrayList<Leaderboard> students = studentDAO.getLeaderbord(request.getParameter("username"));
         String jsonArray = gson.toJson(students);
         return jsonArray;
     }
@@ -83,7 +84,7 @@ public class StudentController {
     @ResponseBody
     public String getLeaderbord(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         Gson gson = new Gson();
-        ArrayList<Student> students = studentDAO.getLeaderbord();
+        ArrayList<Leaderboard> students = studentDAO.getLeaderbord(request.getParameter("username"));
         String jsonArray = gson.toJson(students);
         return jsonArray;
     }

@@ -91,10 +91,11 @@ public class QuestionController {
         return "Question/editQues";
     }
 
-    @RequestMapping(value = "viewQues", method = RequestMethod.POST)
+    @RequestMapping(value = "viewQues", method = RequestMethod.GET)
     public String viewQues(HttpServletRequest request) throws SQLException, ClassNotFoundException {
-        Question question = questionDAO.getAllQuestions_Topic(request.getParameter("quesNo"));
-        ArrayList answerList = answerDAO.getAnswers(request.getParameter("quesNo"));
+        String questionNumber = request.getParameter("quesNo");
+        Question question = questionDAO.getAllQuestions_Topic(questionNumber);
+        ArrayList answerList = answerDAO.getAnswers(questionNumber);
         request.setAttribute("ques", question);
         request.setAttribute("anw", answerList);
         return "Question/viewQuestions";
@@ -102,7 +103,6 @@ public class QuestionController {
 
     @RequestMapping(value = "updateQ", method = RequestMethod.POST)
     public String UpdateQuestion(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
-
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String authId = (String) session.getAttribute("authId");
@@ -182,42 +182,21 @@ public class QuestionController {
         return json;
     }
 
-    @RequestMapping(value = "ques20", method = RequestMethod.GET)
+    @RequestMapping(value = "varQues",produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)
     @ResponseBody
-    public String get20Ques() throws SQLException, ClassNotFoundException {
-        String json = questionDAO.get20Ques();
-        return json;
-    }
-    @RequestMapping(value = "ques30", method = RequestMethod.GET)
-    @ResponseBody
-    public String get30Ques() throws SQLException, ClassNotFoundException {
-        String json = questionDAO.get30Ques();
-        return json;
-    }
-    @RequestMapping(value = "ques40", method = RequestMethod.GET)
-    @ResponseBody
-    public String get40Ques() throws SQLException, ClassNotFoundException {
-        String json = questionDAO.get40Ques();
-        return json;
-    }
-
-    @RequestMapping(value = "ques50", method = RequestMethod.GET)
-    @ResponseBody
-    public String get50Ques() throws SQLException, ClassNotFoundException {
-        String json = questionDAO.get50Ques();
-        return json;
-    }
-
-    @RequestMapping(value = "varQues", method = RequestMethod.GET)
-    @ResponseBody
-    public String getVarQues(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    public String getVarQues(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String json = questionDAO.getVarQues(request.getParameter("quesNo") , request.getParameter("username"));
-        return json;
+        System.out.println("Hi");
+        System.out.println(json);
+        String out = null;
+        try {
+            out = new String(json.getBytes("UTF-8"));
+        } catch (java.io.UnsupportedEncodingException e) {
+            out = null;
+        }
+        System.out.println(out);
+        return out;
     }
-
-    /*@RequestMapping(value = "topic", method = RequestMethod.GET)
-    public String addTopic(HttpServletRequest request) throws ClassNotFoundException, SQLException {
-        return "Question/newTopic";
-    }
-*/
 }

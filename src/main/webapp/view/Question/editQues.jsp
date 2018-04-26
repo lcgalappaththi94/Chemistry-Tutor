@@ -2,11 +2,18 @@
 <%@ page import="com.codex.dialog.model.Question" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ taglib prefix="sform" uri="http://www.springframework.org/tags/form" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="${pageContext.request.contextPath}/resources/js/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
+        tinymce.init({
+            selector: 'textarea',
+            statusbar: false,
+            plugins: 'code',
+            toolbar: 'undo redo styleselect superscript subscript bold italic alignleft aligncenter alignright bullist numlist outdent indent'
+        });
 
         function createXMLHttpRequest() {
             var xmlhttp;
@@ -41,11 +48,17 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
+    <script src="${pageContext.request.contextPath}/resources/jquery/jquery-3.1.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        body {
+            background: url(${pageContext.request.contextPath}/resources/images/93742-d09dd7090171c70be749072814043b26.jpg);
+        }
+    </style>
 </head>
 
-<div id="header">
-    <%@ include file="../fragments/header.jspf" %>
-</div>
 
 <body onload="sendRequest();">
 <div class="container">
@@ -55,9 +68,9 @@
     %>
 
     <div class="panel panel-primary">
-        <div class="panel-heading"><h1>ප්‍රශ්නය යාවත්කාලින කිරිම</h1></div>
+        <div class="panel-heading"><h1>ප්‍රශ්නය යාවත්කාලින කිරිම (ප්‍රශ්න අංක <%=question.getQuesNo()%>)</h1></div>
         <div class="panel-body">
-            <form class="form-horizontal" method="post" action="/updateQ" name="addQuestion">
+            <form class="form-horizontal" method="POST" action="/updateQ" name="addQuestion">
 
                 <input type="hidden" name="qNo" value="<%out.print(question.getQuesNo());%>">
                 <input type="hidden" name="anw1No" value="<%out.print(answers.get(0).getAnsNo());%>">
@@ -65,6 +78,8 @@
                 <input type="hidden" name="anw3No" value="<%out.print(answers.get(2).getAnsNo());%>">
                 <input type="hidden" name="anw4No" value="<%out.print(answers.get(3).getAnsNo());%>">
                 <input type="hidden" name="anw5No" value="<%out.print(answers.get(4).getAnsNo());%>">
+                <%--<input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">--%>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්ණයට අදාළ මාතෘකාව:</label>
@@ -76,7 +91,8 @@
                     <label class="control-label col-sm-2">ප්‍රශ්නය අතුලත් කරන්න</label>
                     <div class="col-sm-6">
                         <textarea class="form-control" rows="4" cols="50" name="ques"
-                                  placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න" required><% out.print(question.getQues()); %></textarea>
+                                  placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න"
+                                  required><% out.print(question.getQues()); %></textarea>
                     </div>
                 </div>
 
@@ -91,47 +107,42 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 1:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw1" required
-                               value="<% out.print(answers.get(0).getAnswer());%>" placeholder="පලවන පිළිතුර">
+                        <textarea class="form-control" name="anw1" required><% out.print(answers.get(0).getAnswer()); %></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 2:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" value="<% out.print(answers.get(1).getAnswer());%>"
-                               name="anw2" placeholder="දෙවන පිළිතුර" required>
+                        <textarea class="form-control" name="anw2" required><% out.print(answers.get(1).getAnswer()); %></textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 3:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw3" required
-                               value="<% out.print(answers.get(2).getAnswer());%>" placeholder="තෙවන පිළිතුර">
+                        <textarea class="form-control" name="anw3" required><% out.print(answers.get(2).getAnswer()); %></textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 4:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw4"
-                               value="<% out.print(answers.get(3).getAnswer());%>" required placeholder="හතරවන පිළිතුර">
+                        <textarea class="form-control" name="anw4" required><% out.print(answers.get(3).getAnswer()); %></textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 5:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw5"
-                               value="<% out.print(answers.get(4).getAnswer());%>" placeholder="පස්වන පිළිතුර">
+                        <textarea class="form-control" name="anw5" required><% out.print(answers.get(4).getAnswer()); %></textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
-                    <div>
-                        <textarea class="form-control" rows="6" cols="75" name="ex"
-                               placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්" value="<% out.print(question.getEx());%>">
+                    <div class="col-sm-6">
+                        <textarea class="form-control" name="ex">
+                            <%out.print(question.getEx());%>
                         </textarea>
                     </div>
                 </div>
@@ -172,54 +183,33 @@
                     </div>
                 </div>
 
-                <% if (question.getDiff().equals("Easy")) {
-                %>
-
-                <div class="selectpicker">
+                <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නයේ අපහසුතාවය:</label>
                     <div class="col-sm-3">
                         <select name="diff">
+                            <% if (question.getDiff().equals("Easy")) {%>
                             <option selected value="Easy">Easy</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Hard">Hard</option>
-                        </select>
-
-                    </div>
-                </div>
-
-                <% } else if (question.getDiff().equals("Medium")) {
-                %>
-
-                <div class="selectpicker">
-                    <label class="control-label col-sm-2">ප්‍රශ්නයේ අපහසුතාවය:</label>
-                    <div class="col-sm-3">
-                        <select name="diff">
+                            <%} else {%>
                             <option value="Easy">Easy</option>
-                            <option Selected value="Medium">Medium</option>
-                            <option value="Hard">Hard</option>
-                        </select>
+                            <%}%>
 
-                    </div>
-                </div>
-
-                <% } else if (question.getDiff().equals("Hard")) {
-                %>
-
-                <div class="selectpicker">
-                    <label class="control-label col-sm-2">ප්‍රශ්නයේ අපහසුතාවය:</label>
-                    <div class="col-sm-3">
-                        <select name="diff">
-                            <option value="Easy">Easy</option>
+                            <%if (question.getDiff().equals("Medium")) { %>
+                            <option selected value="Medium">Medium</option>
+                            <%} else {%>
                             <option value="Medium">Medium</option>
+                            <%}%>
+
+                            <%if (question.getDiff().equals("Hard")) { %>
                             <option selected value="Hard">Hard</option>
+                            <%} else {%>
+                            <option value="Hard">Hard</option>
+                            <%}%>
                         </select>
 
                     </div>
                 </div>
 
-                <%
-                    }
-                %>
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-success">Submit</button>
@@ -232,7 +222,4 @@
     </div>
 </div>
 </body>
-<div id="footer">
-    <%@ include file="../fragments/footer.jspf" %>
-</div>
 </html>

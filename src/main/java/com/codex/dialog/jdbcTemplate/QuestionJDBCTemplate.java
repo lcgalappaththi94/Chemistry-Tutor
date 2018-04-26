@@ -69,6 +69,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         String sql = "select * from Question where qNo = ?";
         Question question;
         question = jdbcTemplateObject.queryForObject(sql, new QuestionMapper(), quesNo);
+        question.getQues();
         return question;
 
     }
@@ -87,6 +88,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
                 "exVed,ref from Question q,Topic t where q.topicId=t.topicId  && qNo=?";
         Question question;
         question = jdbcTemplateObject.queryForObject(sql, new QuestionTopicMapper(), qNo);
+        System.out.println("test"+question.getQues());
         return question;
     }
 
@@ -232,6 +234,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         String sql1 = "SELECT * FROM `Answer` WHERE qNo=?";
         ArrayList<Question> questions;
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper(), username);
+        System.out.println("Question "+questions.get(0).getQues());
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
         for (Question q:questions) {

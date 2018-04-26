@@ -3,26 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="${pageContext.request.contextPath}/resources/js/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
-
-        $.fn.superScript = function() {
-            var chars = '+−=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ',
-                sup   = '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';
-
-            return this.each(function() {
-                this.value = this.value.replace(/<sup[^>]*>(.*?)<\/sup>/g, function(x) {
-                    var str = '',
-                        txt = $.trim($(x).unwrap().text());
-
-                    for (var i=0; i<txt.length; i++) {
-                        var n = chars.indexOf(txt[i]);
-                        str += (n!=-1 ? sup[n] : txt[i]);
-                    }
-                    return str;
-                });
-            });
-        }
-        $('input').superScript();
+        tinymce.init({
+            selector: 'textarea',
+            statusbar: false,
+            plugins: 'code',
+            toolbar: 'undo redo styleselect superscript subscript bold italic alignleft aligncenter alignright bullist numlist outdent indent'
+        });
 
         function createXMLHttpRequest() {
             var xmlhttp;
@@ -52,10 +40,11 @@
                 }
             }
         }
+
         function validate(form) {
-            if (form.getElementById("combo")!=null){
+            if (form.getElementById("combo") != null) {
                 return true;
-            }else{
+            } else {
                 alert('Subject is empty ..!');
                 return false;
             }
@@ -78,7 +67,8 @@
     <div class="panel panel-primary">
         <div class="panel-heading"><h1>නව ප්‍රශ්නයක්</h1></div>
         <div class="panel-body">
-            <form class="form-horizontal" method="post" action="/questionAdd" onsubmit="return validate(this);" name="addQuestion">
+            <form class="form-horizontal" method="post" action="/questionAdd" onsubmit="return validate(this);"
+                  name="addQuestion">
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්ණයට අදාළ මාතෘකාව:</label>
                     <div id="combo" class="col-sm-6">
@@ -87,9 +77,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නය අතුලත් කරන්න</label>
                     <div class="col-sm-6">
-                        </textarea>
-                        <textarea class="form-control" rows="6" cols="75" name="ques"
-                                  placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න" required></textarea>
+                        <textarea id="area" name="ques"></textarea>
                     </div>
                 </div>
 
@@ -104,34 +92,34 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 1:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw1" placeholder="පලවන පිළිතුර" required/>
+                        <textarea class="form-control" name="anw1" required> </textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 2:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw2" placeholder="දෙවන පිළිතුර" required/>
+                        <textarea class="form-control" name="anw2" required> </textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 3:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw3" placeholder="තෙවන පිළිතුර" required/>
+                        <textarea class="form-control" name="anw3" required> </textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 4:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw4" placeholder="හතරවන පිළිතුර" required/>
+                        <textarea class="form-control" name="anw4" required> </textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 5:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw5" placeholder="පස්වන පිළිතුර" required/>
+                        <textarea class="form-control" name="anw5" required> </textarea>
                     </div>
                 </div>
 
@@ -139,7 +127,7 @@
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
                     <div class="col-sm-6">
                         <textarea class="form-control" rows="6" cols="75" name="ex"
-                                  placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්"></textarea>
+                                  placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්"> </textarea>
                     </div>
                 </div>
 

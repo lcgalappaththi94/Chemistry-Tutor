@@ -1,8 +1,10 @@
 package com.codex.dialog.jdbcTemplate;
 
 import com.codex.dialog.dao.StudentDAO;
+import com.codex.dialog.mapper.LeaderboardMapper;
 import com.codex.dialog.mapper.PasswordMapper;
 import com.codex.dialog.mapper.StudentMapper;
+import com.codex.dialog.model.Leaderboard;
 import com.codex.dialog.model.Password;
 import com.codex.dialog.model.Student;
 import org.omg.CORBA.INTERNAL;
@@ -25,9 +27,9 @@ public class StudentJDBCTemplate implements StudentDAO {
     }
 
     @Override
-    public boolean addStudent(String username, String email, String password, String contactNo) throws ClassNotFoundException, SQLException {
+    public boolean addStudent(String username, String email, String password, String contactNo, String login) throws ClassNotFoundException, SQLException {
         String sql = "Insert into Student (username,email,password,contactNo,score,login) values (?,?,(select Password (?)),?,?,?)";
-        return (jdbcTemplateObject.update(sql, username, email, password, contactNo, 0, "") > 0);
+        return (jdbcTemplateObject.update(sql, username, email, password, contactNo, 0, login) > 0);
     }
 
     @Override
@@ -102,12 +104,17 @@ public class StudentJDBCTemplate implements StudentDAO {
     }
 
     @Override
-    public ArrayList<Student> getLeaderbord() throws ClassNotFoundException, SQLException {
-        String sql = "select username,email,password,contactNo,score,login from Student ORDER BY score DESC";
-        Student student;
+    public ArrayList<Leaderboard> getLeaderbord(String username) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT username,score,FIND_IN_SET( score, ( SELECT GROUP_CONCAT( score ORDER BY score DESC ) " +
+                "FROM Student ) ) AS rank FROM Student ORDER BY score DESC LIMIT 20";
+        String sql2 = "SELECT username,score,FIND_IN_SET( score, ( SELECT GROUP_CONCAT( score ORDER BY score DESC ) " +
+                "FROM Student ) ) AS rank FROM Student WHERE username=?";
         try {
-            ArrayList<Student> studentList = (ArrayList<Student>) jdbcTemplateObject.query(sql, new StudentMapper());
-            return studentList;
+            Leaderboard currentStudent = jdbcTemplateObject.queryForObject(sql2, new LeaderboardMapper(), username);
+            ArrayList<Leaderboard> top20 = new ArrayList<>();
+            top20.add(currentStudent);
+            top20.addAll(jdbcTemplateObject.query(sql, new LeaderboardMapper()));
+            return top20;
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }

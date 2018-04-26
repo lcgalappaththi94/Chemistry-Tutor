@@ -25,9 +25,11 @@
         <div class="panel-body">
             <form method="get" action="allQuesByMe">
                 <button class="btn btn-info" value="තමා විසින් එක්කල ප්‍රශ්න සියල්ල">තමා විසින් එක්කල ප්‍රශ්න සියල්ල</button>
+                <input type="hidden" name="currentPage" value="1"/>
             </form>
             <form method="get" action="allQues">
                 <button class="btn btn-primary" value="ප්‍රශ්න සියල්ල">ප්‍රශ්න සියල්ල</button>
+                <input type="hidden" name="currentPage" value="1"/>
             </form>
             <form method="get" action="addQ">
                 <button class="btn btn-success" value="නව ප්‍රශ්නයක් එක් කීරීමට">නව ප්‍රශ්නයක් එක් කීරීමට</button>
