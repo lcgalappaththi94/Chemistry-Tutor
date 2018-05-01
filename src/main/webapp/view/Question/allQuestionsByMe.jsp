@@ -79,7 +79,7 @@
                 newWindow.close();
             }
             newWindow = window.open('/viewQues?quesNo=' + questionNumber, 'Question No ' + questionNumber,
-                'width=' + window.innerWidth * 0.8 + ',height=' + window.innerHeight * 0.8 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.2 + '');
+                'width=' + window.innerWidth * 0.9 + ',height=' + window.innerHeight * 0.9 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.1 + '');
 
         }
 
@@ -88,7 +88,7 @@
                 newWindow.close();
             }
             newWindow = window.open('/searchQues?quesNo=' + questionNumber+'&currentPage='+currentPage+'&length='+length, 'Question No ' + questionNumber,
-                'width=' + window.innerWidth * 0.8 + ',height=' + window.innerHeight * 0.8 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.2 + '');
+                'width=' + window.innerWidth * 0.8 + ',height=' + window.innerHeight * 0.8 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.1 + '');
 
         }
     </script>

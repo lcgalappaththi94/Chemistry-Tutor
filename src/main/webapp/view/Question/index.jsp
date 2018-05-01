@@ -9,6 +9,7 @@
 
     <script type="text/javascript">
         var verificationCode = "";
+
         function passwordVal(doc) {
             var password = doc.password.value;
             var cPassword = doc.cPassword.value;
@@ -18,14 +19,15 @@
                 document.getElementById("cPassword").value = "";
             }
         }
+
         function checkEmail(form) {
-                if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("form-email").value)) {
-                    window.alert("Invalid Email");
-                    document.getElementById("form-email").value = "";
-                    document.getElementById("btn-veri").disabled = true;
-                }else{
-                    sendRequest(form);
-                }
+            if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("form-email").value)) {
+                window.alert("Invalid Email");
+                document.getElementById("form-email").value = "";
+                document.getElementById("btn-veri").disabled = true;
+            } else {
+                sendRequest(form);
+            }
         }
 
         function createXMLHttpRequest() {
@@ -42,7 +44,7 @@
         }
 
         function sendRequest(form) {
-            var url = "mailTaken?email="+form.value;
+            var url = "mailTaken?email=" + form.value;
             var request = createXMLHttpRequest();
             request.open("GET", url, true);
             request.send(null);
@@ -50,10 +52,10 @@
                 if (request.readyState == 4) {
                     if (request.status == 200) {
                         var output = request.responseText;
-                        if (output === "0"){
+                        if (output === "0") {
                             window.alert("Email already taken please re-enter ....");
                             document.getElementById("form-email").value = "";
-                        }else{
+                        } else {
                             document.getElementById("btn-veri").disabled = false;
                         }
                     }
@@ -63,7 +65,7 @@
 
         function veriCode() {
             var email = document.getElementById("form-email").value;
-            var url = "verify?email="+email;
+            var url = "verify?email=" + email;
             var request = createXMLHttpRequest();
             request.open("GET", url, true);
             request.send(null);
@@ -75,11 +77,12 @@
                 }
             }
         }
+
         function onSubmitCodeCheck() {
             var code = document.getElementById("code").value;
-            if (code === verificationCode){
+            if (code === verificationCode) {
                 return true;
-            }else{
+            } else {
                 document.getElementById("code").value = "";
                 window.alert("Verification code is invalid...");
                 return false;
@@ -124,11 +127,15 @@
                                            class="form-username form-control" id="form-username" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="sr-only" for="form-password">Password</label>
+                                    <label class="sr-only" for="SignInPassword">Password</label>
                                     <input type="password" name="pass" placeholder="Password..."
-                                           class="form-password form-control" id="form-password" required>
+                                           class="form-password form-control" id="SignInPassword" required>
+                                    <input type="checkbox"
+                                           onclick="if(this.checked)SignInPassword.type='text';else SignInPassword.type='password';"/>
+                                    show password
+                                    <br>
                                 </div>
-                                <button type="submit" class="btn">Sign in!</button>
+                                <button type="submit" class="btn btn-success">Sign In</button>
                             </form>
                         </div>
                     </div>
@@ -152,35 +159,8 @@
                             </div>
                         </div>
                         <div class="form-bottom">
-                            <form name="sign" action="/addAuther" method="post" class="registration-form" onsubmit="return onSubmitCodeCheck();">
-                                <div class="form-group">
-                                    <label class="sr-only" for="form-first-name">First name</label>
-                                    <input type="text" name="name" placeholder="Enter name..."
-                                           class="form-first-name form-control" id="form-first-name" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="sr-only" for="form-email">Email</label>
-                                    <input type="text" name="form-email" placeholder="Email..."
-                                           class="form-email form-control" id="form-email" required onblur="checkEmail(this);">
-                                </div>
-                                <div class="form-group">
-                                    <button id="btn-veri" type="button" class="btn btn-danger" onclick="veriCode();" n disabled> Send Verification Code </button><br>
-                                    <label class="sr-only" for="form-email">Verification Code</label>
-                                    <input type="text" name="form-code" placeholder="Verification Code..."
-                                           class="form-email form-control" id="code" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="sr-only" for="form-first-name">Password</label>
-                                    <input type="password" name="password" placeholder="Password..."
-                                           class="form-first-name form-control" id="password" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="sr-only" for="form-first-name">Confirm Password</label>
-                                    <input type="password" name="cPassword" placeholder="Confirm Password..."
-                                           class="form-first-name form-control" id="cPassword"
-                                           onblur="passwordVal(document.sign)" required/>
-                                </div>
+                            <form name="sign" action="/addAuther" method="post" class="registration-form"
+                                  onsubmit="return onSubmitCodeCheck();">
 
                                 <div class="form-group">
                                     <label>Designation:</label>
@@ -191,7 +171,48 @@
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn">Sign me up!</button>
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-first-name">First name</label>
+                                    <input type="text" name="name" placeholder="Enter Enter Name"
+                                           class="form-first-name form-control" id="form-first-name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-email">Email</label>
+                                    <input type="text" name="form-email" placeholder="Enter Your Email"
+                                           class="form-email form-control" id="form-email" required
+                                           onblur="checkEmail(this);">
+                                    <button id="btn-veri" type="button" class="btn btn-danger" onclick="veriCode();"
+                                            disabled> Send Verification Code
+                                    </button>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-email">Verification Code</label>
+                                    <input type="text" name="form-code" placeholder="Verification Code..."
+                                           class="form-email form-control" id="code" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-first-name">Password</label>
+                                    <input type="password" name="password" placeholder="Password..."
+                                           class="form-first-name form-control" id="password" required>
+                                    <input type="checkbox"
+                                           onclick="if(this.checked)password.type='text';else password.type='password';"/>
+                                    show password
+                                    <br>
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="form-first-name">Confirm Password</label>
+                                    <input type="password" name="cPassword" placeholder="Confirm Password..."
+                                           class="form-first-name form-control" id="cPassword"
+                                           onblur="passwordVal(document.sign)" required/>
+                                    <input type="checkbox"
+                                           onclick="if(this.checked)cPassword.type='text';else cPassword.type='password';"/>
+                                    show password
+                                    <br>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Sign Me Up</button>
                             </form>
                         </div>
                     </div>

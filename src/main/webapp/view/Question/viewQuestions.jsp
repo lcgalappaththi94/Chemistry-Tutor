@@ -14,19 +14,17 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
     <script src="${pageContext.request.contextPath}/resources/jquery/jquery-3.1.1.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/tinymce/tinymce.min.js"></script>
-    <script type="text/javascript">
-        tinymce.init({
-            selector: 'textarea',
-            statusbar: false,
-            plugins: 'code',
-            toolbar: 'undo redo styleselect superscript subscript bold italic alignleft aligncenter alignright bullist numlist outdent indent'
-        });
-    </script>
 
     <style type="text/css">
         body {
             background: url(${pageContext.request.contextPath}/resources/images/93742-d09dd7090171c70be749072814043b26.jpg);
+        }
+
+        h4, img {
+            border: 1px solid #cbcbcb;
+            border-radius: 5px;
+            padding: 10px 10px 10px 10px;
+            background-color: #eeedef;
         }
     </style>
 </head>
@@ -55,103 +53,98 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්ණයට අදාළ මාතෘකාව:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw1"
-                               value="<% out.print(question.getTopicId());%>" placeholder="පලවන පිළිතුර"
-                               readonly/>
+                        <h4><% out.print(question.getTopicId());%></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නය:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="ques" readonly><% out.print(question.getQues()); %></textarea>
+                        <h4><% out.print(question.getQues()); %></h4>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නයට අදාල වෙනත් මාධ්‍ය:</label>
                     <div class="col-sm-6">
-                        <img src="<%out.print(media);%>" height="200" width="300">
+                        <img src="<%out.print(media);%>" height="200" alt="image render failed">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 1:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw1" readonly><% out.print(answers.get(0).getAnswer()); %></textarea>
+                        <h4><% out.print(answers.get(0).getAnswer());%></h4>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 2:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw2" readonly><% out.print(answers.get(1).getAnswer()); %></textarea>
+                        <h4><% out.print(answers.get(1).getAnswer());%></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 3:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw3" readonly><% out.print(answers.get(2).getAnswer()); %></textarea>
+                        <h4><% out.print(answers.get(2).getAnswer());%></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 4:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw4"
-                               value="<% out.print(answers.get(3).getAnswer());%>" placeholder="හතරවන පිළිතුර"
-                               readonly/>
+                        <h4><% out.print(answers.get(3).getAnswer());%></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 5:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="anw5"
-                               value="<% out.print(answers.get(4).getAnswer());%>" placeholder="පස්වන පිළිතුර"
-                               readonly/>
+                        <h4><% out.print(answers.get(4).getAnswer());%></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="ex">
-                            <% out.print(question.getEx());%>
-                        </textarea>
+                        <h4><%
+                            if (question.getEx().equals("")) out.print("නැත");
+                            else out.print(question.getEx());
+                        %></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිලි කිරීමට අදාල රූප:</label>
                     <div class="col-sm-6">
-                        <img src="<%out.print(exImage);%>" height="200" width="300"/>
+                        <img src="<%out.print(exImage);%>" height="200" alt="image render failed"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිලි කිරීමට අදාල Video:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="exVed"
-                               placeholder="ප්‍රශ්නයට අදාල Gif, පින්තුර link එක. අත්‍යාවශ්‍ය නැත."
-                               value="<% out.print(question.getExVed());%>" readonly/>
+                        <h4><%
+                            if (question.getExVed().equals("")) out.print("නැත");
+                            else out.print(question.getExVed());
+                        %></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">Reference:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="ref"
-                               placeholder="ප්‍රශ්නයට අදාල reference link එක. අත්‍යාවශ්‍ය නැත."
-                               value="<% out.print(question.getRef());%>" readonly/>
+                        <h4><%
+                            if (question.getRef().equals("")) out.print("නැත");
+                            else out.print(question.getRef());
+                        %></h4>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">නිවරදි පිළිතුරේ අංකය:</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" name="corAnw"
-                               value="<%out.print(question.getCorAnw());%>" placeholder="නිවරදි පිළිතුරට අදාල  අංකය"
-                               readonly/>
+                        <h4><%out.print(question.getCorAnw());%></h4>
                     </div>
                 </div>
 
@@ -159,8 +152,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නයේ අපහසුතාවය:</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" name="corAnw" value="<%out.print(question.getDiff());%>"
-                               placeholder="නිවරදි පිළිතුරට අදාල  අංකය" readonly/>
+                        <h4><%out.print(question.getDiff());%></h4>
                     </div>
                 </div>
 

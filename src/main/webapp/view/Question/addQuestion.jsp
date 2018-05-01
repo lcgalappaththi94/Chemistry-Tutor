@@ -3,13 +3,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>New Question</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #FF0000;
+            float: right;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .textTitle {
+            color: #0000FF;
+            float: left;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+
     <script src="${pageContext.request.contextPath}/resources/js/tinymce/tinymce.min.js"></script>
-    <script type="text/javascript">
+    <script>
         tinymce.init({
-            selector: 'textarea',
+            selector: 'textarea#area',
             statusbar: false,
+            menubar: true,
             plugins: 'code',
-            toolbar: 'undo redo styleselect superscript subscript bold italic alignleft aligncenter alignright bullist numlist outdent indent'
+            toolbar: 'cut copy paste undo redo superscript subscript bold italic underline strikethrough  bullist numlist styleselect'
         });
 
         function createXMLHttpRequest() {
@@ -41,6 +97,29 @@
             }
         }
 
+        function sendTopic() {
+            var topic = document.getElementById('topic').value;
+            var url = "add?topic=" + topic;
+
+            var request = createXMLHttpRequest();
+            request.open("POST", url, true);
+            request.send(null);
+            request.onreadystatechange = function () {
+                if (request.readyState == 4) {
+                    if (request.status == 200) {
+                        var output = request.responseText;
+                        alert(output);
+                        if (output == "Added Successfully") {
+                            closePopAddTopic();
+                            sendRequest();
+                        }
+                    } else {
+                        alert("Error With Topic Add!!!");
+                    }
+                }
+            }
+        }
+
         function validate(form) {
             if (form.getElementById("combo") != null) {
                 return true;
@@ -51,8 +130,35 @@
 
         }
 
+        function checkTopic() {
+            var topic = document.getElementById('topic').value;
+            var label = document.getElementById('topicCheck');
+            var url = "check?topic=" + topic;
+
+            if (topic != "") {
+                var request = createXMLHttpRequest();
+                request.open("POST", url, true);
+                request.send(null);
+                request.onreadystatechange = function () {
+                    if (request.readyState == 4) {
+                        if (request.status == 200) {
+                            var output = request.responseText;
+                            if (output == "1") {
+                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>"
+                            } else {
+                                label.innerHTML = "<span style='color:red'><h4><= Topic Already Exists</h4></span>"
+                            }
+                        } else {
+                            alert("Error With Topic Add!!!");
+                        }
+                    }
+                }
+            } else {
+                label.innerHTML = "";
+            }
+        }
+
     </script>
-    <title>New Question</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,22 +168,67 @@
     <%@ include file="../fragments/header.jspf" %>
 </div>
 
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" style="color: red" onclick="closePop()">Save and Close</span>
+        <span class="textTitle"></span>
+        <br><br>
+        <hr>
+        <textarea id="area"></textarea>
+    </div>
+</div>
+
+<div id="myModalAddTopic" class="modal">
+    <div class="modal-content">
+        <span class="close" style="color: red" onclick="closePopAddTopic()">Close</span>
+        <span class="textTitle"><h1>නව මාතෘකාවක්</h1></span>
+        <br><br><br>
+        <hr>
+        <form class="form-horizontal">
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">මාතෘකාව : </label>
+                <div class="col-sm-6">
+                    <input id="topic" type="text" class="form-control"
+                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic()" autofocus required/>
+                </div>
+                <label id="topicCheck"></label>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" onclick="sendTopic()" class="btn btn-success">Submit</button>
+                    <button type="reset" class="btn btn-primary">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <body onload="sendRequest();">
+
 <div class="container">
+
     <div class="panel panel-primary">
         <div class="panel-heading"><h1>නව ප්‍රශ්නයක්</h1></div>
         <div class="panel-body">
             <form class="form-horizontal" method="post" action="/questionAdd" onsubmit="return validate(this);"
                   name="addQuestion">
+
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්ණයට අදාළ මාතෘකාව:</label>
                     <div id="combo" class="col-sm-6">
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නය අතුලත් කරන්න</label>
                     <div class="col-sm-6">
-                        <textarea id="area" name="ques"></textarea>
+                        <textarea class="form-control" id="Ques"
+                                  placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න" onclick="openPop(this)"
+                                  required></textarea>
+                        <input type="hidden" name="ques" id="hiddenQues"/>
                     </div>
                 </div>
 
@@ -92,42 +243,53 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 1:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw1" required> </textarea>
+                        <input type="text" class="form-control" id="Ans1" onclick="openPop(this)"
+                               placeholder="පලවන පිළිතුර" required/>
+                        <input type="hidden" name="anw1" id="hiddenAns1"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 2:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw2" required> </textarea>
+                        <input type="text" class="form-control" id="Ans2" onclick="openPop(this)"
+                               placeholder="දෙවන පිළිතුර" required/>
+                        <input type="hidden" name="anw2" id="hiddenAns2"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 3:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw3" required> </textarea>
+                        <input type="text" class="form-control" id="Ans3" onclick="openPop(this)"
+                               placeholder="තෙවන පිළිතුර" required/>
+                        <input type="hidden" name="anw3" id="hiddenAns3"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 4:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw4" required> </textarea>
+                        <input type="text" class="form-control" id="Ans4" onclick="openPop(this)"
+                               placeholder="හතරවන පිළිතුර" required/>
+                        <input type="hidden" name="anw4" id="hiddenAns4"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 5:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" name="anw5" required> </textarea>
+                        <input type="text" class="form-control" id="Ans5" onclick="openPop(this)"
+                               placeholder="පස්වන පිළිතුර" required/>
+                        <input type="hidden" name="anw5" id="hiddenAns5"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" rows="6" cols="75" name="ex"
-                                  placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්"> </textarea>
+                        <textarea class="form-control" id="Ex"
+                                  placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්" onclick="openPop(this)"> </textarea>
+                        <input type="hidden" name="ex" id="hiddenEx"/>
                     </div>
                 </div>
 
@@ -162,10 +324,10 @@
                                placeholder="නිවරදි පිළිතුරට අදාල  අංකය" min="1" max="5" required/>
                     </div>
                 </div>
-                <div class="selectpicker">
+                <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නයේ අපහසුතාවය:</label>
                     <div class="col-sm-3">
-                        <select name="diff">
+                        <select class="form-control" name="diff">
                             <option selected value="Easy">Easy</option>
                             <option value="Medium">Medium</option>
                             <option value="Hard">Hard</option>
@@ -186,6 +348,60 @@
     </div>
 </div>
 </body>
+
+<script>
+    var modal = document.getElementById('myModal');
+    var modalAddTopic = document.getElementById('myModalAddTopic');
+    var title = document.getElementsByClassName("textTitle")[0];
+    var current;
+
+    function openPop(clickedElement) {
+        if (clickedElement.value != "") {
+            var actualContent = document.getElementById("hidden" + clickedElement.id).value;
+            tinymce.get('area').setContent(actualContent);
+        }
+        current = clickedElement;
+        tinymce.execCommand('mceFocus', false, 'area');
+        modal.style.display = "block";
+        title.innerHTML = clickedElement.placeholder;
+    }
+
+    function closePop() {
+        modal.style.display = "none";
+        var content = tinymce.get('area').getContent();
+        var plainText = getPlainText(content);
+        document.getElementById("hidden" + current.id).value = content;
+        current.value = plainText;
+        tinymce.get('area').setContent("");
+        current = null;
+    }
+
+    function openPopAddTopic() {
+        modalAddTopic.style.display = "block";
+        document.getElementById('topicCheck').innerHTML = "";
+    }
+
+    function closePopAddTopic() {
+        modalAddTopic.style.display = "none";
+        document.getElementById('topic').value = "";
+        document.getElementById('topicCheck').innerHTML = "";
+    }
+
+    function getPlainText(originalContent){
+        return jQuery(originalContent).text();
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            tinymce.get('area').setContent("");
+            current = null;
+        } else if (event.target == modalAddTopic) {
+            modalAddTopic.style.display = "none";
+            document.getElementById('topic').value = "";
+        }
+    }
+</script>
 
 <div id="footer">
     <%@ include file="../fragments/footer.jspf" %>
