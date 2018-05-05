@@ -87,7 +87,7 @@ public class QuestionController {
         return "Question/editQues";
     }
 
-    @RequestMapping(value = "viewQues", method = RequestMethod.GET)
+    @RequestMapping(value = "viewQues", method = RequestMethod.POST)
     public String viewQues(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         String questionNumber = request.getParameter("quesNo");
         Question question = questionDAO.getAllQuestions_Topic(questionNumber);

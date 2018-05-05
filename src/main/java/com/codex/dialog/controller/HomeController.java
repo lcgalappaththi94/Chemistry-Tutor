@@ -48,8 +48,8 @@ public class HomeController {
     }
 
     @RequestMapping(value = "allQues", method = RequestMethod.GET)
-    public String getAllQues(HttpServletRequest request,ModelMap model) throws SQLException, ClassNotFoundException {
-        int pageSize=10;
+    public String getAllQues(HttpServletRequest request, ModelMap model) throws SQLException, ClassNotFoundException {
+        int pageSize = 10;
 
         HttpSession session = request.getSession();
         String topicId = (String) session.getAttribute("topicId");
@@ -71,15 +71,15 @@ public class HomeController {
         for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + pageSize && i < questions.size(); i++) {
             questionsList.add(questions.get(i));
         }
-        model.put("length",length);
-        model.put("currentPage",currentPage);
+        model.put("length", length);
+        model.put("currentPage", currentPage);
         model.addAttribute("quesList", questionsList);
         return "Question/allQuestions";
     }
 
     @RequestMapping(value = "allQuesByMe", method = RequestMethod.GET)
-    public String getAllQuesByMe(HttpServletRequest request,ModelMap model) throws SQLException, ClassNotFoundException {
-        int pageSize=10;
+    public String getAllQuesByMe(HttpServletRequest request, ModelMap model) throws SQLException, ClassNotFoundException {
+        int pageSize = 10;
         HttpSession session = request.getSession();
         String topicId = (String) session.getAttribute("topicId");
         String authId = (String) session.getAttribute("authId");
@@ -101,9 +101,9 @@ public class HomeController {
         for (int i = (currentPage - 1) * pageSize; i < (currentPage - 1) * pageSize + pageSize && i < questions.size(); i++) {
             questionsList.add(questions.get(i));
         }
-        model.put("length",length);
-        model.put("currentPage",currentPage);
-        model.put("msg",msg);
+        model.put("length", length);
+        model.put("currentPage", currentPage);
+        model.put("msg", msg);
         model.addAttribute("quesList", questionsList);
         return "Question/allQuestionsByMe";
     }

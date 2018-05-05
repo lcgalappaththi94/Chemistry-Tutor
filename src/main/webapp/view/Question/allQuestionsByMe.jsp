@@ -75,24 +75,6 @@
             }
         }
 
-        function readMore(questionNumber) {
-            if (newWindow != null) {
-                newWindow.close();
-            }
-            newWindow = window.open('/viewQues?quesNo=' + questionNumber, 'Question No ' + questionNumber,
-                'width=' + window.innerWidth * 0.9 + ',height=' + window.innerHeight * 0.9 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.1 + '');
-
-        }
-
-        function update(questionNumber) {
-            if (newWindow != null) {
-                newWindow.close();
-            }
-            newWindow = window.open('/searchQues?quesNo=' + questionNumber + '&currentPage=' + currentPage + '&length=' + length, 'Question No ' + questionNumber,
-                'width=' + window.innerWidth * 0.9 + ',height=' + window.innerHeight * 0.9 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.1 + '');
-
-        }
-
         function clearSpan() {
             setTimeout(clearSpanNow, 1500);
         }
@@ -134,15 +116,19 @@
                 %>
                 <td class="ques"><% out.print(question.getQues()); %></td>
                 <td>
-                    <button class="btn btn-info" onclick="readMore(<%=q%>)">Read More</button>
+                    <form method="post" action="/viewQues">
+                        <input type="hidden" name="quesNo" value="<%=q%>">
+                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                        <button class="btn btn-info" type="submit">Read More</button>
+                    </form>
                 </td>
                 <td>
-                    <%--<button class="btn btn-info" onclick="update(<%=q%>)">Update</button>--%>
                     <form method="post" action="/searchQues">
                         <input type="hidden" name="quesNo" value="<%=q%>">
                         <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
                         <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
-                        <button class="btn btn-info" type="submit">Update</button>
+                        <button class="btn btn-info" type="submit">Edit</button>
                     </form>
                 </td>
                 <td>

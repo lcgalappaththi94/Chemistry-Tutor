@@ -32,7 +32,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         boolean isAns = false;
         boolean isQues = jdbcTemplateObject.update(sql, question.getQuesNo(), question.getTopicId(),
                 question.getAuthId(), question.getQues(), question.getCorAnw(), question.getDiff(),
-                question.getMedia(),question.getEx(),question.getExImage(),question.getExVed(),question.getRef()) > 0;
+                question.getMedia(), question.getEx(), question.getExImage(), question.getExVed(), question.getRef()) > 0;
         for (Answer answer : answers) {
             isAns = false;
             String sql2 = "Insert into Answer values ( ? , ? , ?)";
@@ -60,7 +60,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
                 "ref=? WHERE qNo=?";
         return (jdbcTemplateObject.update(sql, question.getQues(), Integer.parseInt(question.getTopicId()),
                 Integer.parseInt(question.getCorAnw()), question.getDiff(), question.getMedia(),
-                question.getEx(),question.getExImage(),question.getExVed(), question.getRef(),
+                question.getEx(), question.getExImage(), question.getExVed(), question.getRef(),
                 Integer.parseInt(question.getQuesNo())) > 0);
     }
 
@@ -88,7 +88,7 @@ public class QuestionJDBCTemplate implements QuestionDAO {
                 "exVed,ref from Question q,Topic t where q.topicId=t.topicId  && qNo=?";
         Question question;
         question = jdbcTemplateObject.queryForObject(sql, new QuestionTopicMapper(), qNo);
-        System.out.println("test"+question.getQues());
+        System.out.println("test" + question.getQues());
         return question;
     }
 
@@ -131,15 +131,15 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper());
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
-        for (Question q:questions) {
-            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(),q.getQuesNo());
+        for (Question q : questions) {
+            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(), q.getQuesNo());
             allAnswers.addAll(answersToQue);
         }
 
         Gson gson = new Gson();
         String json1 = gson.toJson(questions);
         String json2 = gson.toJson(allAnswers);
-        String finalString = json1 +"@"+json2;
+        String finalString = json1 + "@" + json2;
         return finalString;
     }
 
@@ -151,15 +151,15 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper());
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
-        for (Question q:questions) {
-            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(),q.getQuesNo());
+        for (Question q : questions) {
+            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(), q.getQuesNo());
             allAnswers.addAll(answersToQue);
         }
 
         Gson gson = new Gson();
         String json1 = gson.toJson(questions);
         String json2 = gson.toJson(allAnswers);
-        String finalString = json1 +"@"+json2;
+        String finalString = json1 + "@" + json2;
         return finalString;
     }
 
@@ -171,15 +171,15 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper());
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
-        for (Question q:questions) {
-            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(),q.getQuesNo());
+        for (Question q : questions) {
+            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(), q.getQuesNo());
             allAnswers.addAll(answersToQue);
         }
 
         Gson gson = new Gson();
         String json1 = gson.toJson(questions);
         String json2 = gson.toJson(allAnswers);
-        String finalString = json1 +"@"+json2;
+        String finalString = json1 + "@" + json2;
 
         return finalString;
     }
@@ -192,15 +192,15 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper());
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
-        for (Question q:questions) {
-            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(),q.getQuesNo());
+        for (Question q : questions) {
+            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(), q.getQuesNo());
             allAnswers.addAll(answersToQue);
         }
 
         Gson gson = new Gson();
         String json1 = gson.toJson(questions);
         String json2 = gson.toJson(allAnswers);
-        String finalString = json1 +"@"+json2;
+        String finalString = json1 + "@" + json2;
 
         return finalString;
     }
@@ -214,15 +214,15 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper());
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
-        for (Question q:questions) {
-            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(),q.getQuesNo());
+        for (Question q : questions) {
+            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(), q.getQuesNo());
             allAnswers.addAll(answersToQue);
         }
 
         Gson gson = new Gson();
         String json1 = gson.toJson(questions);
         String json2 = gson.toJson(allAnswers);
-        String finalString = json1 +"@"+json2;
+        String finalString = json1 + "@" + json2;
 
         return finalString;
     }
@@ -234,18 +234,18 @@ public class QuestionJDBCTemplate implements QuestionDAO {
         String sql1 = "SELECT * FROM `Answer` WHERE qNo=?";
         ArrayList<Question> questions;
         questions = (ArrayList<Question>) jdbcTemplateObject.query(sql, new QuestionMapper(), username);
-        System.out.println("Question "+questions.get(0).getQues());
+        System.out.println("Question " + questions.get(0).getQues());
 
         ArrayList<Answer> allAnswers = new ArrayList<>();
-        for (Question q:questions) {
-            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(),q.getQuesNo());
+        for (Question q : questions) {
+            ArrayList<Answer> answersToQue = (ArrayList<Answer>) jdbcTemplateObject.query(sql1, new AnswerMapper(), q.getQuesNo());
             allAnswers.addAll(answersToQue);
         }
 
         Gson gson = new Gson();
         String json1 = gson.toJson(questions);
         String json2 = gson.toJson(allAnswers);
-        String finalString = json1 +"@"+json2;
+        String finalString = json1 + "@" + json2;
 
         return finalString;
     }

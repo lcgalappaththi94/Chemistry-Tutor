@@ -19,7 +19,7 @@
         }
 
         function sendRequest(form) {
-            var url = "isTopic?topic="+form.value;
+            var url = "isTopic?topic=" + form.value;
             var request = createXMLHttpRequest();
             request.open("GET", url, true);
             request.send(null);
@@ -27,7 +27,7 @@
                 if (request.readyState == 4) {
                     if (request.status == 200) {
                         var output = request.responseText;
-                        if (output === "0"){
+                        if (output === "0") {
                             window.alert("Topic already exists. please re-enter ....");
                             document.getElementById("topic").value = "";
                         }
@@ -53,7 +53,8 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">මාතෘකාව : </label>
                     <div class="col-sm-6">
-                        <input id="topic" type="text" class="form-control" name="topic" placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" required onblur="sendRequest(this);">
+                        <input id="topic" type="text" class="form-control" name="topic"
+                               placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" required onblur="sendRequest(this);">
                     </div>
                 </div>
 

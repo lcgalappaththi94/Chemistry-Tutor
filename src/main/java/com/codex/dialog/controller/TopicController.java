@@ -53,7 +53,7 @@ public class TopicController {
         boolean isTopicExists = topicDAO.isTopic(topic.getTopic());
         if (!isTopicExists) {
             return "1";
-        }else{
+        } else {
             return "0";
         }
 
@@ -76,15 +76,15 @@ public class TopicController {
     }
 
     @RequestMapping(value = "allTopicsSelected", method = RequestMethod.GET)
-    public void getAllTopicsSelected(HttpServletRequest req,HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException {
+    public void getAllTopicsSelected(HttpServletRequest req, HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException {
         ArrayList<Topic> topics = topicDAO.getTopics();
-        String selected=req.getParameter("selected");
+        String selected = req.getParameter("selected");
         String txt = "<select id=\"type\" class=\"form-control\" name=\"topic\" required>";
         for (Topic topic : topics) {
             if (topic.getTopic() != null) {
-                if(topic.getTopic().equals(selected)){
+                if (topic.getTopic().equals(selected)) {
                     txt += "<option selected>" + topic.getTopic() + "</option>";
-                }else{
+                } else {
                     txt += "<option>" + topic.getTopic() + "</option>";
                 }
             }

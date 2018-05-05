@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
@@ -39,7 +38,7 @@ public class AuthorController {
             Auther addedAuther = authorDAO.getAuther(request.getParameter("form-email"));
             HttpSession session = request.getSession();
             session.setAttribute("authId", addedAuther.getAuthId());
-            msg="Author Added Successfully";
+            msg = "Author Added Successfully";
         } else {
             msg = "Failed To Add Author";
         }
@@ -88,8 +87,7 @@ public class AuthorController {
             auther.getDesig();
             request.setAttribute("auther", auther);
             return "Question/viewAuther";
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -97,19 +95,18 @@ public class AuthorController {
     @RequestMapping(value = "updateAuther", method = RequestMethod.POST)
     public String updateAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         HttpSession session = request.getSession();
-        Auther auther = new Auther(request.getParameter("authId"),request.getParameter("designation"),request.getParameter("email"),request.getParameter("password"),request.getParameter("name"));
+        Auther auther = new Auther(request.getParameter("authId"), request.getParameter("designation"), request.getParameter("email"), request.getParameter("password"), request.getParameter("name"));
         String msg;
         if (!auther.getPassword().equals("")) {
-            if(authorDAO.updateAuthor(auther)){
+            if (authorDAO.updateAuthor(auther)) {
                 msg = "Author Updated Successfully";
-            }else{
+            } else {
                 msg = "Update Unsuccessful";
             }
-        }
-        else {
-            if(authorDAO.updateAuthorWithoutPassword(auther)){
+        } else {
+            if (authorDAO.updateAuthorWithoutPassword(auther)) {
                 msg = "Author Updated Successfully";
-            }else{
+            } else {
                 msg = "Update Unsuccessful";
             }
         }
@@ -118,20 +115,20 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "checkOldVal", method = RequestMethod.GET)
-    public void confirmOldPassword(HttpServletRequest request ,HttpServletResponse response) throws SQLException, ClassNotFoundException, IOException {
+    public void confirmOldPassword(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, IOException {
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
         PrintWriter out = response.getWriter();
-        String authId = authorDAO.authenticate(pass,email);
-        if (authId.equals("")){
-           out.print("0");
-        }else {
+        String authId = authorDAO.authenticate(pass, email);
+        if (authId.equals("")) {
+            out.print("0");
+        } else {
             out.print("1");
         }
     }
 
     @RequestMapping(value = "verify", method = RequestMethod.GET)
-    public void confirmEmail(HttpServletRequest request ,HttpServletResponse response) throws IOException {
+    public void confirmEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         Random random = new Random();
 
@@ -149,20 +146,21 @@ public class AuthorController {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(from,password);
+                        return new PasswordAuthentication(from, password);
                     }
                 });
         //compose message
         try {
             MimeMessage message = new MimeMessage(session);
-            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject("Welcome");
             message.setText("Please use this code to verify. " + id);
             //send message
             Transport.send(message);
             out.print(id);
-        } catch (MessagingException e) {throw new RuntimeException(e);}
-        finally {
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } finally {
             out.close();
         }
     }

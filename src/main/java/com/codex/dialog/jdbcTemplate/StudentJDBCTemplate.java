@@ -7,11 +7,9 @@ import com.codex.dialog.mapper.StudentMapper;
 import com.codex.dialog.model.Leaderboard;
 import com.codex.dialog.model.Password;
 import com.codex.dialog.model.Student;
-import org.omg.CORBA.INTERNAL;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,13 +36,13 @@ public class StudentJDBCTemplate implements StudentDAO {
         String sql2 = "INSERT INTO DoneQuestion (username,qNo) VALUES (?,?)";
         boolean isDoneUpdated = false;
         int updatedScore = Integer.parseInt(score);
-        for (double question: questions) {
-            isDoneUpdated =false;
+        for (double question : questions) {
+            isDoneUpdated = false;
             Student student = viewAccount(username);
             updatedScore = Integer.parseInt(student.getScore()) + Integer.parseInt(score);
-            isDoneUpdated = (jdbcTemplateObject.update(sql2, username, (int)question) > 0);
+            isDoneUpdated = (jdbcTemplateObject.update(sql2, username, (int) question) > 0);
         }
-        if (questions.size() == 0){
+        if (questions.size() == 0) {
             Student student = viewAccount(username);
             updatedScore = Integer.parseInt(student.getScore()) + Integer.parseInt(score);
             isDoneUpdated = true;
@@ -55,7 +53,7 @@ public class StudentJDBCTemplate implements StudentDAO {
     @Override
     public boolean updateDetails(String username, String email, String password, String contactNo) throws ClassNotFoundException, SQLException {
         String sql = "UPDATE Student SET email=?,password=(select Password (?)),contactNo=? WHERE username=?";
-        return jdbcTemplateObject.update(sql,email, password, contactNo, username) > 0;
+        return jdbcTemplateObject.update(sql, email, password, contactNo, username) > 0;
     }
 
     @Override
@@ -81,7 +79,7 @@ public class StudentJDBCTemplate implements StudentDAO {
         Password pass = null;
         try {
             pass = jdbcTemplateObject.queryForObject(sql, new PasswordMapper(), password, username);
-        }catch (EmptyResultDataAccessException ex){
+        } catch (EmptyResultDataAccessException ex) {
             return false;
         }
         if (pass.getPassword().equals(pass.getNewPassword())) {

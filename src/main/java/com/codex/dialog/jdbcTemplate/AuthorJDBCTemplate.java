@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class AuthorJDBCTemplate implements AuthorDAO {
 
@@ -59,7 +58,7 @@ public class AuthorJDBCTemplate implements AuthorDAO {
         Password pass = null;
         try {
             pass = jdbcTemplateObject.queryForObject(sql, new PasswordMapper(), password, email);
-        }catch (EmptyResultDataAccessException ex){
+        } catch (EmptyResultDataAccessException ex) {
             return "";
         }
         if (pass.getPassword().equals(pass.getNewPassword())) {
@@ -78,12 +77,12 @@ public class AuthorJDBCTemplate implements AuthorDAO {
     @Override
     public boolean updateAuthor(Auther auther) throws ClassNotFoundException, SQLException {
         String sql = "UPDATE Author SET destination=?,password=(select Password (?)),name=? WHERE authorId=?";
-        return jdbcTemplateObject.update(sql,auther.getDesig(),auther.getPassword(),auther.getName(),auther.getAuthId())>0;
+        return jdbcTemplateObject.update(sql, auther.getDesig(), auther.getPassword(), auther.getName(), auther.getAuthId()) > 0;
     }
 
     @Override
     public boolean updateAuthorWithoutPassword(Auther auther) throws ClassNotFoundException, SQLException {
         String sql = "UPDATE Author SET destination=?,name=? WHERE authorId=?";
-        return jdbcTemplateObject.update(sql,auther.getDesig(),auther.getName(),auther.getAuthId())>0;
+        return jdbcTemplateObject.update(sql, auther.getDesig(), auther.getName(), auther.getAuthId()) > 0;
     }
 }

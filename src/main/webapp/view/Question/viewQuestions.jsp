@@ -29,6 +29,10 @@
     </style>
 </head>
 
+<div id="header">
+    <%@ include file="../fragments/header.jspf" %>
+</div>
+
 <body onload="sendRequest();">
 <div class="container">
     <%
@@ -163,4 +167,9 @@
     </div>
 </div>
 </body>
+
+<div id="footer">
+    <%@ include file="../fragments/footer.jspf" %>
+</div>
+
 </html>

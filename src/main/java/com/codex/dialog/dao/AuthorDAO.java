@@ -4,7 +4,6 @@ import com.codex.dialog.model.Auther;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 @Service
 public interface AuthorDAO {
@@ -19,7 +18,7 @@ public interface AuthorDAO {
 
     public Auther getAuthor(String auhId) throws ClassNotFoundException, SQLException;
 
-    public boolean updateAuthor (Auther auther) throws ClassNotFoundException, SQLException;
+    public boolean updateAuthor(Auther auther) throws ClassNotFoundException, SQLException;
 
-    public boolean updateAuthorWithoutPassword (Auther auther) throws ClassNotFoundException, SQLException;
+    public boolean updateAuthorWithoutPassword(Auther auther) throws ClassNotFoundException, SQLException;
 }

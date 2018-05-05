@@ -13,7 +13,7 @@ public class QueAutherMapper implements RowMapper<QueAuther> {
         QueAuther ques = new QueAuther("" + rs.getInt("qNo"), "" + rs.getInt("authorId"),
                 "" + rs.getInt("topicId"), rs.getString("question"),
                 rs.getString("media"), rs.getString("corAnwrId"),
-                rs.getString("difficulty"), rs.getString("name") ,
+                rs.getString("difficulty"), rs.getString("name"),
                 rs.getString("destination"));
         return ques;
     }

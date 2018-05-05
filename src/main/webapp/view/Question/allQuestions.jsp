@@ -1,5 +1,5 @@
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.codex.dialog.model.QueAuther" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,16 +74,6 @@
                 redirect();
             }
         }
-
-        function readMore(questionNumber) {
-            if (newWindow != null) {
-                newWindow.close();
-            }
-            newWindow = window.open('/viewQues?quesNo=' + questionNumber, 'Question No ' + questionNumber,
-                'width=' + window.innerWidth * 0.8 + ',height=' + window.innerHeight * 0.8 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.2 + '');
-
-        }
-
     </script>
 
 </head>
@@ -124,7 +114,12 @@
                     %>
                 <td class="ques"><% out.print(questionWithAuthor); %></td>
                 <td>
-                    <button class="btn btn-info" onclick="readMore(<%=q%>)">Read More</button>
+                    <form method="post" action="/viewQues">
+                        <input type="hidden" name="quesNo" value="<%=q%>">
+                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                        <button class="btn btn-info" type="submit">Read More</button>
+                    </form>
                 </td>
                     <%}%>
             </tbody>

@@ -51,10 +51,10 @@ public class StudentController {
     public String updateStudent(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         HttpSession session = request.getSession();
         if (studentDAO.updateDetails(request.getParameter("username"), request.getParameter("email"),
-                request.getParameter("password"), request.getParameter("contactNo"))){
+                request.getParameter("password"), request.getParameter("contactNo"))) {
 
             return "true";
-        } else{
+        } else {
             return "false";
         }
     }
@@ -62,9 +62,9 @@ public class StudentController {
     @RequestMapping(value = "updateLogin", method = RequestMethod.POST)
     @ResponseBody
     public String updateLogin(HttpServletRequest request) throws SQLException, ClassNotFoundException {
-        if (studentDAO.updateLoginTime(request.getParameter("username"), request.getParameter("login"))){
+        if (studentDAO.updateLoginTime(request.getParameter("username"), request.getParameter("login"))) {
             return "true";
-        } else{
+        } else {
             return "false";
         }
     }
@@ -91,13 +91,13 @@ public class StudentController {
 
     @RequestMapping(value = "authenticate", method = RequestMethod.POST)
     @ResponseBody
-    public String isCorrectPassword(HttpServletRequest request ,HttpServletResponse response) throws SQLException, ClassNotFoundException, IOException {
+    public String isCorrectPassword(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, IOException {
         String username = request.getParameter("username");
         String pass = request.getParameter("password");
-        boolean isCorrect = studentDAO.checkPass(username,pass);
-        if (isCorrect){
+        boolean isCorrect = studentDAO.checkPass(username, pass);
+        if (isCorrect) {
             return "true";
-        }else {
+        } else {
             return "false";
         }
     }

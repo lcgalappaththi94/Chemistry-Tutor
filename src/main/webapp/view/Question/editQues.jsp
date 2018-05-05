@@ -82,7 +82,7 @@
         }
 
         function sendRequest(selected) {
-            var url = "allTopicsSelected?selected="+selected;
+            var url = "allTopicsSelected?selected=" + selected;
 
             var request = createXMLHttpRequest();
             request.open("GET", url, true);
@@ -191,6 +191,10 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
+
+<div id="header">
+    <%@ include file="../fragments/header.jspf" %>
+</div>
 
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -417,6 +421,11 @@
     </div>
 </div>
 </body>
+
+<div id="footer">
+    <%@ include file="../fragments/footer.jspf" %>
+</div>
+
 <script>
     var modal = document.getElementById('myModal');
     var modalAddTopic = document.getElementById('myModalAddTopic');

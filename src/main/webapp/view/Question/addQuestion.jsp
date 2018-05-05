@@ -110,13 +110,13 @@
                     if (request.status == 200) {
                         var output = request.responseText;
                         if (output == "Added Successfully") {
-                            topicSuccess.style.color="green";
-                            topicSuccess.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Added Successfully!!!";
-                            setTimeout(closePopAddTopic,1500);
+                            topicSuccess.style.color = "green";
+                            topicSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Added Successfully!!!";
+                            setTimeout(closePopAddTopic, 1500);
                         }
                     } else {
-                        topicSuccess.style.color="red";
-                        topicSuccess.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Error Occurred!!!";
+                        topicSuccess.style.color = "red";
+                        topicSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Error Occurred!!!";
                     }
                 }
             }
@@ -137,7 +137,7 @@
             var label = document.getElementById('topicCheck');
             var url = "check?topic=" + topic;
 
-            if (topic.length!=0) {
+            if (topic.length != 0) {
                 var request = createXMLHttpRequest();
                 request.open("POST", url, true);
                 request.send(null);
@@ -147,7 +147,7 @@
                             var output = request.responseText;
                             if (output == "1") {
                                 label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>";
-                                if(isSubmit==1){
+                                if (isSubmit == 1) {
                                     sendTopic();
                                 }
                             } else {
@@ -390,7 +390,7 @@
         modalAddTopic.style.display = "none";
         document.getElementById('topic').value = "";
         document.getElementById('topicCheck').innerHTML = "";
-        document.getElementById('topicSuccess').innerHTML="";
+        document.getElementById('topicSuccess').innerHTML = "";
         sendRequest();
     }
 
