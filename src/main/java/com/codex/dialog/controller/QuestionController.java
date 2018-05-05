@@ -5,11 +5,9 @@ import com.codex.dialog.dao.QuestionDAO;
 import com.codex.dialog.dao.TopicDAO;
 import com.codex.dialog.model.Answer;
 import com.codex.dialog.model.Question;
-import com.codex.dialog.model.Topic;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,11 +52,9 @@ public class QuestionController {
         String myparam = request.getParameter("ques");
         byte[] bytes = myparam.getBytes("UTF-8");
 
-        System.out.println(new String(bytes, "UTF-8"));
-
         session.setAttribute(topicId, null);
         Question question = new Question("" + nQuesId, authId, topicId, request.getParameter("ques"),
-                request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff") ,
+                request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff"),
                 request.getParameter("ex"), request.getParameter("exImage"), request.getParameter("exVed"),
                 request.getParameter("ref"));
 
@@ -71,23 +65,25 @@ public class QuestionController {
         }
         String msg;
         if (questionDAO.addQuestion(question, answers)) {
-            msg = "Added Successfully";
-            request.setAttribute("msg", msg);
-            return "Question/successHome";
-
+            msg = "Question Added Successfully";
         } else {
             msg = "Failed to add";
-            request.setAttribute("msg", msg);
-            return "Question/failHome";
         }
+        request.setAttribute("msg", msg);
+        return "Question/home";
     }
 
     @RequestMapping(value = "searchQues", method = RequestMethod.POST)
     public String searchQues(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         Question question = questionDAO.getAllQuestions_Topic(request.getParameter("quesNo"));
         ArrayList answerList = answerDAO.getAnswers(request.getParameter("quesNo"));
+        int length = Integer.parseInt(request.getParameter("length"));
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+
         request.setAttribute("ques", question);
         request.setAttribute("anw", answerList);
+        request.setAttribute("length", length);
+        request.setAttribute("currentPage", currentPage);
         return "Question/editQues";
     }
 
@@ -102,13 +98,17 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "updateQ", method = RequestMethod.POST)
-    public String UpdateQuestion(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
+    public String UpdateQuestion(HttpServletRequest request, ModelMap model) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String authId = (String) session.getAttribute("authId");
 
+        int length = Integer.parseInt(request.getParameter("length"));
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        model.addAttribute("length", length);
+        model.addAttribute("currentPage", currentPage);
+
         String topicId = topicDAO.getTopicByName(request.getParameter("topic"));
-        System.out.println(request.getParameter("topic"));
 
         try {
             if (authId.equals(null)) {
@@ -123,7 +123,7 @@ public class QuestionController {
 
         Question question = new Question(qNo, authId, topicId, request.getParameter("ques"),
                 request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff"),
-                request.getParameter("ex"),request.getParameter("exImage"), request.getParameter("exVed"),
+                request.getParameter("ex"), request.getParameter("exImage"), request.getParameter("exVed"),
                 request.getParameter("ref"));
 
         ArrayList<Answer> answers = new ArrayList<Answer>();
@@ -151,27 +151,31 @@ public class QuestionController {
 
         String msg;
         if (questionDAO.updateQuestion(question) && isAns) {
-            msg = "updated Successfully";
-            request.setAttribute("msg", msg);
-            return "Question/successHome";
+            msg = "Question Updated Successfully";
+            model.addAttribute("msg", msg);
+            return "redirect:/allQuesByMe";
         } else {
             msg = "Failed to update";
-            request.setAttribute("msg", msg);
-            return "Question/failHome";
+            model.addAttribute("msg", msg);
+            return "redirect:/allQuesByMe";
         }
     }
 
     @RequestMapping(value = "deleteQues", method = RequestMethod.POST)
-    public String deleteQues(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    public String deleteQues(HttpServletRequest request, ModelMap model) throws SQLException, ClassNotFoundException {
         String msg;
+        int length = Integer.parseInt(request.getParameter("length"));
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        model.addAttribute("length", length);
+        model.addAttribute("currentPage", currentPage);
         if (questionDAO.deleteQuestion(request.getParameter("quesNo"))) {
-            msg = "Added Successfully";
-            request.setAttribute("msg", msg);
-            return "Question/successHome";
+            msg = "Question Deleted Successfully";
+            model.addAttribute("msg", msg);
+            return "redirect:/allQuesByMe";
         } else {
-            msg = "Failed to add";
-            request.setAttribute("msg", msg);
-            return "Question/failHome";
+            msg = "Failed to delete";
+            model.addAttribute("msg", msg);
+            return "redirect:/allQuesByMe";
         }
     }
 
@@ -182,21 +186,18 @@ public class QuestionController {
         return json;
     }
 
-    @RequestMapping(value = "varQues",produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = "varQues", produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)
     @ResponseBody
     public String getVarQues(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
-        String json = questionDAO.getVarQues(request.getParameter("quesNo") , request.getParameter("username"));
-        System.out.println("Hi");
-        System.out.println(json);
+        String json = questionDAO.getVarQues(request.getParameter("quesNo"), request.getParameter("username"));
         String out = null;
         try {
             out = new String(json.getBytes("UTF-8"));
         } catch (java.io.UnsupportedEncodingException e) {
             out = null;
         }
-        System.out.println(out);
         return out;
     }
 }

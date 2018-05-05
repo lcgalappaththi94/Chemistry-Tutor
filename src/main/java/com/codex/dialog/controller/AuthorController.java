@@ -33,17 +33,18 @@ public class AuthorController {
         Auther auther = new Auther("", request.getParameter("designation"), request.getParameter("form-email"), request.getParameter("password"), request.getParameter("name"));
         boolean isAdded = false;
         boolean isAuthExists = authorDAO.isAuther(request.getParameter("form-email"));
+        String msg;
         if (!isAuthExists) {
             isAuthExists = authorDAO.addAuther(auther);
             Auther addedAuther = authorDAO.getAuther(request.getParameter("form-email"));
             HttpSession session = request.getSession();
             session.setAttribute("authId", addedAuther.getAuthId());
-            return "Question/successHome";
+            msg="Author Added Successfully";
         } else {
-            String msg = "Failed To add";
-            request.setAttribute("msg", msg);
-            return "Question/failHome";
+            msg = "Failed To Add Author";
         }
+        request.setAttribute("msg", msg);
+        return "Question/home";
     }
 
     @RequestMapping(value = "mailTaken", method = RequestMethod.GET)
@@ -97,20 +98,23 @@ public class AuthorController {
     public String updateAuthor(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         HttpSession session = request.getSession();
         Auther auther = new Auther(request.getParameter("authId"),request.getParameter("designation"),request.getParameter("email"),request.getParameter("password"),request.getParameter("name"));
+        String msg;
         if (!auther.getPassword().equals("")) {
             if(authorDAO.updateAuthor(auther)){
-                return "Question/successHome";
+                msg = "Author Updated Successfully";
             }else{
-                return "Question/failHome";
+                msg = "Update Unsuccessful";
             }
         }
         else {
             if(authorDAO.updateAuthorWithoutPassword(auther)){
-                return "Question/successHome";
+                msg = "Author Updated Successfully";
             }else{
-                return "Question/failHome";
+                msg = "Update Unsuccessful";
             }
         }
+        request.setAttribute("msg", msg);
+        return "Question/home";
     }
 
     @RequestMapping(value = "checkOldVal", method = RequestMethod.GET)
@@ -156,7 +160,6 @@ public class AuthorController {
             message.setText("Please use this code to verify. " + id);
             //send message
             Transport.send(message);
-            System.out.println("message sent successfully");
             out.print(id);
         } catch (MessagingException e) {throw new RuntimeException(e);}
         finally {

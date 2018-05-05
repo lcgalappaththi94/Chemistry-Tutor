@@ -48,6 +48,7 @@
             }
             document.getElementById('' + currentPage).style.color = '#FF0000';
             document.getElementById("pageDetail").innerHTML = "<b>Page " + currentPage + " of " + pages + "</b>";
+            clearSpan();
         }
 
         function transition(pageNumber) {
@@ -87,9 +88,17 @@
             if (newWindow != null) {
                 newWindow.close();
             }
-            newWindow = window.open('/searchQues?quesNo=' + questionNumber+'&currentPage='+currentPage+'&length='+length, 'Question No ' + questionNumber,
-                'width=' + window.innerWidth * 0.8 + ',height=' + window.innerHeight * 0.8 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.1 + '');
+            newWindow = window.open('/searchQues?quesNo=' + questionNumber + '&currentPage=' + currentPage + '&length=' + length, 'Question No ' + questionNumber,
+                'width=' + window.innerWidth * 0.9 + ',height=' + window.innerHeight * 0.9 + ',directories=0,toolbar=0,location=0,status=0,scrollbars=0,resizable=1,left=' + window.innerWidth * 0.1 + ',top=' + window.innerHeight * 0.1 + '');
 
+        }
+
+        function clearSpan() {
+            setTimeout(clearSpanNow, 1500);
+        }
+
+        function clearSpanNow() {
+            document.getElementById("msg").innerHTML = "";
         }
     </script>
 </head>
@@ -102,7 +111,8 @@
 <div class="container">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h1>සියලුම ප්‍රශ්න</h1>
+            <h1>සියලුම ප්‍රශ්න &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="msg" style="background-color: #0f0f0f">${msg}</span></h1>
         </div>
         <table id="services" class="table table-striped table-hover table-users">
             <thead>

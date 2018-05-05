@@ -64,7 +64,7 @@
             selector: 'textarea#area',
             statusbar: false,
             menubar: true,
-            plugins: 'code',
+            plugins: 'autoresize',
             toolbar: 'cut copy paste undo redo superscript subscript bold italic underline strikethrough  bullist numlist styleselect'
         });
 
@@ -99,6 +99,7 @@
 
         function sendTopic() {
             var topic = document.getElementById('topic').value;
+            var topicSuccess = document.getElementById('topicSuccess');
             var url = "add?topic=" + topic;
 
             var request = createXMLHttpRequest();
@@ -108,13 +109,14 @@
                 if (request.readyState == 4) {
                     if (request.status == 200) {
                         var output = request.responseText;
-                        alert(output);
                         if (output == "Added Successfully") {
-                            closePopAddTopic();
-                            sendRequest();
+                            topicSuccess.style.color="green";
+                            topicSuccess.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Added Successfully!!!";
+                            setTimeout(closePopAddTopic,1500);
                         }
                     } else {
-                        alert("Error With Topic Add!!!");
+                        topicSuccess.style.color="red";
+                        topicSuccess.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Error Occurred!!!";
                     }
                 }
             }
@@ -130,12 +132,12 @@
 
         }
 
-        function checkTopic() {
+        function checkTopic(isSubmit) {
             var topic = document.getElementById('topic').value;
             var label = document.getElementById('topicCheck');
             var url = "check?topic=" + topic;
 
-            if (topic != "") {
+            if (topic.length!=0) {
                 var request = createXMLHttpRequest();
                 request.open("POST", url, true);
                 request.send(null);
@@ -144,9 +146,12 @@
                         if (request.status == 200) {
                             var output = request.responseText;
                             if (output == "1") {
-                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>"
+                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>";
+                                if(isSubmit==1){
+                                    sendTopic();
+                                }
                             } else {
-                                label.innerHTML = "<span style='color:red'><h4><= Topic Already Exists</h4></span>"
+                                label.innerHTML = "<span style='color:red'><h4><= Topic Already Exists</h4></span>";
                             }
                         } else {
                             alert("Error With Topic Add!!!");
@@ -154,7 +159,7 @@
                     }
                 }
             } else {
-                label.innerHTML = "";
+                label.innerHTML = "<span style='color:red'><h4><= Empty</h4></span>";
             }
         }
 
@@ -181,7 +186,7 @@
 <div id="myModalAddTopic" class="modal">
     <div class="modal-content">
         <span class="close" style="color: red" onclick="closePopAddTopic()">Close</span>
-        <span class="textTitle"><h1>නව මාතෘකාවක්</h1></span>
+        <h1 class="textTitle">නව මාතෘකාවක්<span id="topicSuccess"></span></h1>
         <br><br><br>
         <hr>
         <form class="form-horizontal">
@@ -190,14 +195,14 @@
                 <label class="control-label col-sm-2">මාතෘකාව : </label>
                 <div class="col-sm-6">
                     <input id="topic" type="text" class="form-control"
-                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic()" autofocus required/>
+                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic(0)" autofocus/>
                 </div>
                 <label id="topicCheck"></label>
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" onclick="sendTopic()" class="btn btn-success">Submit</button>
+                    <button type="button" onclick="checkTopic(1)" class="btn btn-success">Submit</button>
                     <button type="reset" class="btn btn-primary">Clear</button>
                 </div>
             </div>
@@ -225,7 +230,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නය අතුලත් කරන්න</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" id="Ques"
+                        <textarea class="form-control" id="Ques" rows="4"
                                   placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න" onclick="openPop(this)"
                                   required></textarea>
                         <input type="hidden" name="ques" id="hiddenQues"/>
@@ -279,7 +284,7 @@
                     <label class="control-label col-sm-2">පිළිතුර 5:</label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" id="Ans5" onclick="openPop(this)"
-                               placeholder="පස්වන පිළිතුර" required/>
+                               placeholder="පස්වන පිළිතුර"/>
                         <input type="hidden" name="anw5" id="hiddenAns5"/>
                     </div>
                 </div>
@@ -287,7 +292,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" id="Ex"
+                        <textarea class="form-control" id="Ex" rows="4"
                                   placeholder="ප්‍රශ්නයට අදාල පැහැදිළි කිරීම්" onclick="openPop(this)"> </textarea>
                         <input type="hidden" name="ex" id="hiddenEx"/>
                     </div>
@@ -385,10 +390,14 @@
         modalAddTopic.style.display = "none";
         document.getElementById('topic').value = "";
         document.getElementById('topicCheck').innerHTML = "";
+        document.getElementById('topicSuccess').innerHTML="";
+        sendRequest();
     }
 
-    function getPlainText(originalContent){
-        return jQuery(originalContent).text();
+    function getPlainText(originalContent) {
+        var temporalDivElement = document.createElement("div");
+        temporalDivElement.innerHTML = originalContent;
+        return temporalDivElement.textContent || temporalDivElement.innerText || "";
     }
 
     window.onclick = function (event) {

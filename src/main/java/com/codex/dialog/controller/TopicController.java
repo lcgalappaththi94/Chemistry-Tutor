@@ -75,6 +75,27 @@ public class TopicController {
         out.close();
     }
 
+    @RequestMapping(value = "allTopicsSelected", method = RequestMethod.GET)
+    public void getAllTopicsSelected(HttpServletRequest req,HttpServletResponse resp) throws ClassNotFoundException, SQLException, IOException {
+        ArrayList<Topic> topics = topicDAO.getTopics();
+        String selected=req.getParameter("selected");
+        String txt = "<select id=\"type\" class=\"form-control\" name=\"topic\" required>";
+        for (Topic topic : topics) {
+            if (topic.getTopic() != null) {
+                if(topic.getTopic().equals(selected)){
+                    txt += "<option selected>" + topic.getTopic() + "</option>";
+                }else{
+                    txt += "<option>" + topic.getTopic() + "</option>";
+                }
+            }
+        }
+        txt += "</select>";
+        txt += "<a onclick=\"openPopAddTopic()\"><button type=\"button\" class=\"btn btn-primary\">Add New Topic</button></a>";
+        PrintWriter out = resp.getWriter();
+        out.print(txt);
+        out.close();
+    }
+
     @RequestMapping(value = "isTopic", method = RequestMethod.GET)
     public void topicValidation(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, IOException {
         PrintWriter out = response.getWriter();

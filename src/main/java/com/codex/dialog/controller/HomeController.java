@@ -73,8 +73,7 @@ public class HomeController {
         }
         model.put("length",length);
         model.put("currentPage",currentPage);
-
-        request.setAttribute("quesList", questionsList);
+        model.addAttribute("quesList", questionsList);
         return "Question/allQuestions";
     }
 
@@ -85,6 +84,7 @@ public class HomeController {
         String topicId = (String) session.getAttribute("topicId");
         String authId = (String) session.getAttribute("authId");
         int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        String msg = request.getParameter("msg");
 
         try {
             if (authId.equals(null)) {
@@ -103,8 +103,8 @@ public class HomeController {
         }
         model.put("length",length);
         model.put("currentPage",currentPage);
-
-        request.setAttribute("quesList", questionsList);
+        model.put("msg",msg);
+        model.addAttribute("quesList", questionsList);
         return "Question/allQuestionsByMe";
     }
 
@@ -124,6 +124,7 @@ public class HomeController {
         HttpSession session = request.getSession();
         session.removeAttribute("authId");
         session.removeAttribute("topicId");
+        session.invalidate();
         return "Question/index";
     }
 }

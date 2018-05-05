@@ -31,7 +31,6 @@
             width: 80%;
         }
 
-        /* The Close Button */
         .close {
             color: #FF0000;
             float: right;
@@ -70,6 +69,7 @@
 
         function sendTopic() {
             var topic = document.getElementById('topic').value;
+            var topicSuccess = document.getElementById('topicSuccess');
             var url = "add?topic=" + topic;
 
             var request = createXMLHttpRequest();
@@ -79,23 +79,25 @@
                 if (request.readyState == 4) {
                     if (request.status == 200) {
                         var output = request.responseText;
-                        alert(output);
                         if (output == "Added Successfully") {
-                            closePopAddTopic();
+                            topicSuccess.style.color = "green";
+                            topicSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Added Successfully!!!";
+                            setTimeout(closePopAddTopic, 1500);
                         }
                     } else {
-                        alert("Error With Topic Add!!!");
+                        topicSuccess.style.color = "red";
+                        topicSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Error Occurred!!!";
                     }
                 }
             }
         }
 
-        function checkTopic() {
+        function checkTopic(isSubmit) {
             var topic = document.getElementById('topic').value;
             var label = document.getElementById('topicCheck');
             var url = "check?topic=" + topic;
 
-            if (topic != "") {
+            if (topic.length != 0) {
                 var request = createXMLHttpRequest();
                 request.open("POST", url, true);
                 request.send(null);
@@ -104,9 +106,12 @@
                         if (request.status == 200) {
                             var output = request.responseText;
                             if (output == "1") {
-                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>"
+                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>";
+                                if (isSubmit == 1) {
+                                    sendTopic();
+                                }
                             } else {
-                                label.innerHTML = "<span style='color:red'><h4><= Topic Already Exists</h4></span>"
+                                label.innerHTML = "<span style='color:red'><h4><= Topic Already Exists</h4></span>";
                             }
                         } else {
                             alert("Error With Topic Add!!!");
@@ -114,8 +119,16 @@
                     }
                 }
             } else {
-                label.innerHTML = "";
+                label.innerHTML = "<span style='color:red'><h4><= Empty</h4></span>";
             }
+        }
+
+        function clearSpan() {
+            setTimeout(clearSpanNow, 1500);
+        }
+
+        function clearSpanNow() {
+            document.getElementById("msg").innerHTML = "";
         }
     </script>
 
@@ -127,7 +140,7 @@
 <div id="myModalAddTopic" class="modal">
     <div class="modal-content">
         <span class="close" style="color: red" onclick="closePopAddTopic()">Close</span>
-        <span class="textTitle"><h1>නව මාතෘකාවක්</h1></span>
+        <h1 class="textTitle">නව මාතෘකාවක්<span id="topicSuccess"></span></h1>
         <br><br><br>
         <hr>
         <form class="form-horizontal">
@@ -136,14 +149,14 @@
                 <label class="control-label col-sm-2">මාතෘකාව : </label>
                 <div class="col-sm-6">
                     <input id="topic" type="text" class="form-control"
-                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic()" autofocus required/>
+                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic(0)" autofocus required/>
                 </div>
                 <label id="topicCheck"></label>
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" onclick="sendTopic()" class="btn btn-success">Submit</button>
+                    <button type="button" onclick="checkTopic(1)" class="btn btn-success">Submit</button>
                     <button type="reset" class="btn btn-primary">Clear</button>
                 </div>
             </div>
@@ -151,10 +164,14 @@
     </div>
 </div>
 
-<body>
+<body onload="clearSpan()">
+
 <div class="container">
     <div class="panel panel-primary">
-        <div class="panel-heading"><h1>My Dashboard</h1></div>
+        <div class="panel-heading">
+            <h1>My Dashboard &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="msg" style="background-color: #0f0f0f">${msg}</span></h1>
+        </div>
         <div class="panel-body">
             <form method="GET" action="allQuesByMe">
                 <button class="btn btn-info btn-lg" value="තමා විසින් එක්කල ප්‍රශ්න සියල්ල">
@@ -205,6 +222,7 @@
         modalAddTopic.style.display = "none";
         document.getElementById('topic').value = "";
         document.getElementById('topicCheck').innerHTML = "";
+        document.getElementById('topicSuccess').innerHTML = "";
     }
 
     window.onclick = function (event) {

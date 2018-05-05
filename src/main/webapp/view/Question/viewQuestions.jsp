@@ -97,12 +97,14 @@
                     </div>
                 </div>
 
+                <%if (!answers.get(4).getAnswer().isEmpty()) {%>
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 5:</label>
                     <div class="col-sm-6">
                         <h4><% out.print(answers.get(4).getAnswer());%></h4>
                     </div>
                 </div>
+                <%}%>
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>

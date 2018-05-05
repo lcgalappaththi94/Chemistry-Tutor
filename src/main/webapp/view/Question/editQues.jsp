@@ -64,7 +64,7 @@
             selector: 'textarea#area',
             statusbar: false,
             menubar: true,
-            plugins: 'code',
+            plugins: 'autoresize',
             toolbar: 'cut copy paste undo redo superscript subscript bold italic underline strikethrough  bullist numlist styleselect'
         });
 
@@ -81,8 +81,8 @@
 
         }
 
-        function sendRequest() {
-            var url = "allTopics";
+        function sendRequest(selected) {
+            var url = "allTopicsSelected?selected="+selected;
 
             var request = createXMLHttpRequest();
             request.open("GET", url, true);
@@ -98,10 +98,6 @@
             convertElements();
         }
 
-        function convert(element) {
-            element.value = getPlainText(document.getElementById(element.id).value);
-        }
-
         function convertElements() {
             var ques = document.getElementById("Ques");
             var ans1 = document.getElementById("Ans1");
@@ -110,17 +106,28 @@
             var ans4 = document.getElementById("Ans4");
             var ans5 = document.getElementById("Ans5");
             var ex = document.getElementById("Ex");
-            convert(ques);
-            convert(ans1);
-            convert(ans2);
-            convert(ans3);
-            convert(ans4);
-            convert(ans5);
-            convert(ex);
+            convert(ques, "textArea");
+            convert(ans1, "input");
+            convert(ans2, "input");
+            convert(ans3, "input");
+            convert(ans4, "input");
+            convert(ans5, "input");
+            convert(ex, "textArea");
+        }
+
+        function convert(element, type) {
+            if (type == "textArea") {
+                var value = element.value;
+                element.value = getPlainText(value);
+            } else if (type == "input") {
+                var value = element.value;
+                element.value = getPlainText(value);
+            }
         }
 
         function sendTopic() {
             var topic = document.getElementById('topic').value;
+            var topicSuccess = document.getElementById('topicSuccess');
             var url = "add?topic=" + topic;
 
             var request = createXMLHttpRequest();
@@ -130,24 +137,25 @@
                 if (request.readyState == 4) {
                     if (request.status == 200) {
                         var output = request.responseText;
-                        alert(output);
                         if (output == "Added Successfully") {
-                            closePopAddTopic();
-                            sendRequest();
+                            topicSuccess.style.color = "green";
+                            topicSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Added Successfully!!!";
+                            setTimeout(closePopAddTopic, 1500);
                         }
                     } else {
-                        alert("Error With Topic Add!!!");
+                        topicSuccess.style.color = "red";
+                        topicSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Error Occurred!!!";
                     }
                 }
             }
         }
 
-        function checkTopic() {
+        function checkTopic(isSubmit) {
             var topic = document.getElementById('topic').value;
             var label = document.getElementById('topicCheck');
             var url = "check?topic=" + topic;
 
-            if (topic != "") {
+            if (topic.length != 0) {
                 var request = createXMLHttpRequest();
                 request.open("POST", url, true);
                 request.send(null);
@@ -156,9 +164,12 @@
                         if (request.status == 200) {
                             var output = request.responseText;
                             if (output == "1") {
-                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>"
+                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>";
+                                if (isSubmit == 1) {
+                                    sendTopic();
+                                }
                             } else {
-                                label.innerHTML = "<span style='color:red'><h4><= Topic Already Exists</h4></span>"
+                                label.innerHTML = "<span style='color:red'><h4><= Topic Already Exists</h4></span>";
                             }
                         } else {
                             alert("Error With Topic Add!!!");
@@ -166,7 +177,7 @@
                     }
                 }
             } else {
-                label.innerHTML = "";
+                label.innerHTML = "<span style='color:red'><h4><= Empty</h4></span>";
             }
         }
     </script>
@@ -194,7 +205,7 @@
 <div id="myModalAddTopic" class="modal">
     <div class="modal-content">
         <span class="close" style="color: red" onclick="closePopAddTopic()">Close</span>
-        <span class="textTitle"><h1>නව මාතෘකාවක්</h1></span>
+        <h1 class="textTitle">නව මාතෘකාවක්<span id="topicSuccess"></span></h1>
         <br><br><br>
         <hr>
         <form class="form-horizontal">
@@ -203,14 +214,14 @@
                 <label class="control-label col-sm-2">මාතෘකාව : </label>
                 <div class="col-sm-6">
                     <input id="topic" type="text" class="form-control"
-                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic()" autofocus required/>
+                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic(0)" autofocus/>
                 </div>
                 <label id="topicCheck"></label>
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" onclick="sendTopic()" class="btn btn-success">Submit</button>
+                    <button type="button" onclick="checkTopic(1)" class="btn btn-success">Submit</button>
                     <button type="reset" class="btn btn-primary">Clear</button>
                 </div>
             </div>
@@ -218,18 +229,18 @@
     </div>
 </div>
 
+<%
+    Question question = (Question) request.getAttribute("ques");
+    ArrayList<Answer> answers = (ArrayList<Answer>) request.getAttribute("anw");
+%>
 
-<body onload="sendRequest();">
+<body onload="sendRequest(<%out.print("'"+question.getTopicId()+"'");%>)">
 <div class="container">
-    <%
-        Question question = (Question) request.getAttribute("ques");
-        ArrayList<Answer> answers = (ArrayList<Answer>) request.getAttribute("anw");
-    %>
 
     <div class="panel panel-primary">
         <div class="panel-heading"><h1>ප්‍රශ්නය යාවත්කාලින කිරිම (ප්‍රශ්න අංක <%=question.getQuesNo()%>)</h1></div>
         <div class="panel-body">
-            <form class="form-horizontal" method="POST" action="/updateQ" name="addQuestion">
+            <form class="form-horizontal" method="POST" action="/updateQ" name="updateQuestion">
 
                 <input type="hidden" name="qNo" value="<%out.print(question.getQuesNo());%>">
                 <input type="hidden" name="anw1No" value="<%out.print(answers.get(0).getAnsNo());%>">
@@ -249,7 +260,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නය අතුලත් කරන්න</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" id="Ques"
+                        <textarea class="form-control" id="Ques" rows="4"
                                   placeholder="ඔබගේ ප්‍රශ්නය ඇතුලත් කරන්න" onclick="openPop(this)"
                                   required><% out.print(question.getQues()); %></textarea>
                         <input type="hidden" name="ques" value="<% out.print(question.getQues()); %>"
@@ -269,11 +280,11 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 1:</label>
                     <div class="col-sm-6">
+                        <input type="text" class="form-control" id="Ans1"
+                               value="<% out.print(answers.get(0).getAnswer());%>"
+                               onclick="openPop(this)" placeholder="පලවන පිළිතුර" required>
                         <input type="hidden" name="anw1" value="<% out.print(answers.get(0).getAnswer());%>"
                                id="hiddenAns1"/>
-                        <input type="text" class="form-control" id="Ans1" required
-                               value="<% out.print(answers.get(0).getAnswer());%>" onlo="convert(this)"
-                               onclick="openPop(this)" placeholder="පලවන පිළිතුර">
                     </div>
                 </div>
 
@@ -291,9 +302,9 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">පිළිතුර 3:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="Ans3" required
+                        <input type="text" class="form-control" id="Ans3"
                                value="<% out.print(answers.get(2).getAnswer());%>" onclick="openPop(this)"
-                               placeholder="තෙවන පිළිතුර">
+                               placeholder="තෙවන පිළිතුර" required>
                         <input type="hidden" name="anw3" value="<% out.print(answers.get(2).getAnswer());%>"
                                id="hiddenAns3"/>
                     </div>
@@ -303,8 +314,8 @@
                     <label class="control-label col-sm-2">පිළිතුර 4:</label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" id="Ans4"
-                               value="<% out.print(answers.get(3).getAnswer());%>" required onclick="openPop(this)"
-                               placeholder="හතරවන පිළිතුර">
+                               value="<% out.print(answers.get(3).getAnswer());%>" onclick="openPop(this)"
+                               placeholder="හතරවන පිළිතුර" required>
                         <input type="hidden" name="anw4" value="<% out.print(answers.get(3).getAnswer());%>"
                                id="hiddenAns4"/>
                     </div>
@@ -324,9 +335,9 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">පැහැදිළි කිරීම්:</label>
                     <div class="col-sm-6">
-                        <textarea class="form-control" id="Ex" onclick="openPop(this)">
-                            <%out.print(question.getEx());%>
-                        </textarea>
+                        <textarea class="form-control" id="Ex" rows="4" placeholder="ඔබගේ පැහැදිළි කිරීම"
+                                  onclick="openPop(this)">
+                            <%out.print(question.getEx());%></textarea>
                         <input type="hidden" name="ex" value="<%out.print(question.getEx());%>" id="hiddenEx"/>
                     </div>
                 </div>
@@ -442,10 +453,14 @@
         modalAddTopic.style.display = "none";
         document.getElementById('topic').value = "";
         document.getElementById('topicCheck').innerHTML = "";
+        document.getElementById('topicSuccess').innerHTML = "";
+        sendRequest();
     }
 
     function getPlainText(originalContent) {
-        return jQuery(originalContent).text();
+        var temporalDivElement = document.createElement("div");
+        temporalDivElement.innerHTML = originalContent;
+        return temporalDivElement.textContent || temporalDivElement.innerText || "";
     }
 
     window.onclick = function (event) {
