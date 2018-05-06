@@ -64,8 +64,8 @@
             selector: 'textarea#area',
             statusbar: false,
             menubar: true,
-            plugins: 'autoresize',
-            toolbar: 'cut copy paste undo redo superscript subscript bold italic underline strikethrough  bullist numlist styleselect'
+            plugins: 'code autoresize',
+            toolbar: 'cut copy paste undo redo superscript subscript bold italic underline strikethrough  bullist numlist styleselect code'
         });
 
         function createXMLHttpRequest() {
