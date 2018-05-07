@@ -64,7 +64,9 @@
             selector: 'textarea#area',
             statusbar: false,
             menubar: true,
-            plugins: 'code autoresize',
+            plugins: 'code autoresize paste',
+            paste_enable_default_filters: false,
+            valid_elements: 'p,sup,sub,h1,h2,h3,h4,h5,h6,b,i,emp,strong,strike,s,del',
             toolbar: 'cut copy paste undo redo superscript subscript bold italic underline strikethrough  bullist numlist styleselect code'
         });
 
