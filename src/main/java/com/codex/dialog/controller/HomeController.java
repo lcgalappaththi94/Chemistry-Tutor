@@ -123,6 +123,7 @@ public class HomeController {
     public String logout(HttpServletRequest request) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
         HttpSession session = request.getSession();
         session.removeAttribute("authId");
+        session.removeAttribute("authName");
         session.removeAttribute("topicId");
         session.invalidate();
         return "Question/index";

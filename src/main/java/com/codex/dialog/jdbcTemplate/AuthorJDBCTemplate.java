@@ -69,9 +69,9 @@ public class AuthorJDBCTemplate implements AuthorDAO {
     }
 
     @Override
-    public Auther getAuthor(String auhId) throws ClassNotFoundException, SQLException {
+    public Auther getAuthor(String authId) throws ClassNotFoundException, SQLException {
         String sql = "select * from Author where authorId = ?";
-        return jdbcTemplateObject.queryForObject(sql, new AutherMapper(), auhId);
+        return jdbcTemplateObject.queryForObject(sql, new AutherMapper(), authId);
     }
 
     @Override

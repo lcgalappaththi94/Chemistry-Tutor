@@ -21,22 +21,22 @@
         }
 
         function checkEmail(form) {
-            if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("form-email").value)) {
-                window.alert("Invalid Email");
-                document.getElementById("form-email").value = "";
-                document.getElementById("btn-veri").disabled = true;
-            } else {
-                sendRequest(form);
+            if(document.getElementById("form-email").value.length>0) {
+                if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("form-email").value)) {
+                    window.alert("Invalid Email");
+                    document.getElementById("form-email").value = "";
+                    document.getElementById("btn-veri").disabled = true;
+                } else {
+                    sendRequest(form);
+                }
             }
         }
 
         function createXMLHttpRequest() {
             var xmlhttp;
             if (window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
             } else {
-                // code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
             return xmlhttp;
@@ -55,6 +55,7 @@
                         if (output === "0") {
                             window.alert("Email already taken please re-enter ....");
                             document.getElementById("form-email").value = "";
+                            document.getElementById("btn-veri").disabled = true;
                         } else {
                             document.getElementById("btn-veri").disabled = false;
                         }
@@ -73,6 +74,7 @@
                 if (request.readyState == 4) {
                     if (request.status == 200) {
                         verificationCode = request.responseText;
+                        alert("Email Sent! Please Enter Verification Code")
                     }
                 }
             }
@@ -189,7 +191,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="sr-only" for="form-email">Verification Code</label>
-                                    <input type="text" name="form-code" placeholder="Verification Code..."
+                                    <input type="text" name="form-code" placeholder="Enter 4 digit verification code"
                                            class="form-email form-control" id="code" required>
                                 </div>
                                 <div class="form-group">

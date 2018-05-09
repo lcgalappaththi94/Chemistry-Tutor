@@ -58,7 +58,7 @@ public class QuestionController {
                 request.getParameter("ex"), request.getParameter("exImage"), request.getParameter("exVed"),
                 request.getParameter("ref"));
 
-        ArrayList<Answer> answers = new ArrayList<Answer>();
+        ArrayList<Answer> answers = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
             Answer answer = new Answer("" + i, "" + nQuesId, request.getParameter("anw" + i));
             answers.add(answer);
@@ -79,11 +79,14 @@ public class QuestionController {
         ArrayList answerList = answerDAO.getAnswers(request.getParameter("quesNo"));
         int length = Integer.parseInt(request.getParameter("length"));
         int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        int allQuestions = Integer.parseInt(request.getParameter("allQuestions"));
+
 
         request.setAttribute("ques", question);
         request.setAttribute("anw", answerList);
         request.setAttribute("length", length);
         request.setAttribute("currentPage", currentPage);
+        request.setAttribute("allQuestions", allQuestions);
         return "Question/editQues";
     }
 
@@ -102,6 +105,7 @@ public class QuestionController {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String authId = (String) session.getAttribute("authId");
+        int allQuestions = Integer.parseInt(request.getParameter("allQuestions"));
 
         int length = Integer.parseInt(request.getParameter("length"));
         int currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -153,11 +157,17 @@ public class QuestionController {
         if (questionDAO.updateQuestion(question) && isAns) {
             msg = "Question Updated Successfully";
             model.addAttribute("msg", msg);
-            return "redirect:/allQuesByMe";
+            if (allQuestions == 0)
+                return "redirect:/allQuesByMe";
+            else
+                return "redirect:/allQues";
         } else {
             msg = "Failed to update";
             model.addAttribute("msg", msg);
-            return "redirect:/allQuesByMe";
+            if (allQuestions == 0)
+                return "redirect:/allQuesByMe";
+            else
+                return "redirect:/allQues";
         }
     }
 
@@ -166,16 +176,24 @@ public class QuestionController {
         String msg;
         int length = Integer.parseInt(request.getParameter("length"));
         int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        int allQuestions = Integer.parseInt(request.getParameter("allQuestions"));
+
         model.addAttribute("length", length);
         model.addAttribute("currentPage", currentPage);
         if (questionDAO.deleteQuestion(request.getParameter("quesNo"))) {
             msg = "Question Deleted Successfully";
             model.addAttribute("msg", msg);
-            return "redirect:/allQuesByMe";
+            if (allQuestions == 0)
+                return "redirect:/allQuesByMe";
+            else
+                return "redirect:/allQues";
         } else {
             msg = "Failed to delete";
             model.addAttribute("msg", msg);
-            return "redirect:/allQuesByMe";
+            if (allQuestions == 0)
+                return "redirect:/allQuesByMe";
+            else
+                return "redirect:/allQues";
         }
     }
 

@@ -88,7 +88,6 @@ public class QuestionJDBCTemplate implements QuestionDAO {
                 "exVed,ref from Question q,Topic t where q.topicId=t.topicId  && qNo=?";
         Question question;
         question = jdbcTemplateObject.queryForObject(sql, new QuestionTopicMapper(), qNo);
-        System.out.println("test" + question.getQues());
         return question;
     }
 

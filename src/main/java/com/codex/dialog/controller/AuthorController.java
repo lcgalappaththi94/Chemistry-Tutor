@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -38,6 +41,7 @@ public class AuthorController {
             Auther addedAuther = authorDAO.getAuther(request.getParameter("form-email"));
             HttpSession session = request.getSession();
             session.setAttribute("authId", addedAuther.getAuthId());
+            session.setAttribute("authName", addedAuther.getName());
             msg = "Author Added Successfully";
         } else {
             msg = "Failed To Add Author";
@@ -63,10 +67,12 @@ public class AuthorController {
         String pass = request.getParameter("pass");
 
         String authId = authorDAO.authenticate(pass, email);
+        String authName=authorDAO.getAuthor(authId).getName();
         if (!authId.equals("")) {
             //String msg = "Authenticated User :"+authId ;
             HttpSession session = request.getSession();
             session.setAttribute("authId", authId);
+            session.setAttribute("authName", authName);
             return "Question/home";
 
         } else {
@@ -153,8 +159,16 @@ public class AuthorController {
         try {
             MimeMessage message = new MimeMessage(session);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject("Welcome");
-            message.setText("Please use this code to verify. " + id);
+            message.setSubject("Welcome to Chemistry Tutor Web");
+            BodyPart messageBodyPart = new MimeBodyPart();
+            String textToSend="<h1>Thanks for joining Chemistry Tutor Web!</h1><p>" +
+                    "You may enter your confirmation code to continue: </p> " +
+                    "<pre style=\"background: #f6f6f3; border: 1px solid #d8d7d4; border-radius: 3px; display: inline-block; font-family: monospace; font-size: 1rem; font-weight: 600; line-height: 1em; margin: 0; padding: 5px 8px;\">"+id+"</pre><hr><h5>Powered by CODEX</h5>";
+            messageBodyPart.setContent(textToSend,"text/html");
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
+
             //send message
             Transport.send(message);
             out.print(id);

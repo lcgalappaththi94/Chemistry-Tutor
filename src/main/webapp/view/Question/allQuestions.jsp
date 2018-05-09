@@ -106,22 +106,51 @@
             <input type="hidden" id="length" value="<%=length%>"/>
 
             <tr class="add-row">
-                    <%
+                <%
                     String q = question.getQuesNo();
+                    String author = question.getAuthId();
                     StringBuilder questionWithAuthor = new StringBuilder(question.getQues());
                     questionWithAuthor.append("\n").append("- ").
-                    append(question.getDesig()).append(".").append(question.getAutherName()).append(" -");
-                    %>
+                            append(question.getDesig()).append(".").append(question.getAutherName()).append(" -");
+                    if (author.equals(request.getSession().getAttribute("authId"))) {
+                        questionWithAuthor.append(" (You) -");
+                    }
+                %>
                 <td class="ques"><% out.print(questionWithAuthor); %></td>
                 <td>
                     <form method="post" action="/viewQues">
                         <input type="hidden" name="quesNo" value="<%=q%>">
                         <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
                         <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                        <input type="hidden" name="allQuestions" value="1">
                         <button class="btn btn-info" type="submit">Read More</button>
                     </form>
                 </td>
-                    <%}%>
+                <% if (author.equals(request.getSession().getAttribute("authId"))) {%>
+                <td>
+                    <form method="post" action="/searchQues">
+                        <input type="hidden" name="quesNo" value="<%=q%>">
+                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                        <input type="hidden" name="allQuestions" value="1">
+                        <button class="btn btn-info" type="submit">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" onsubmit="return confirm('Do you really want to delete the Question ?');"
+                          action="/deleteQues">
+                        <input type="hidden" name="quesNo" value="<%=q%>">
+                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                        <input type="hidden" name="allQuestions" value="1">
+                        <button class="btn btn-info" type="submit">Delete</button>
+                    </form>
+                </td>
+                <%
+                        }
+                    }
+                %>
+            </tr>
             </tbody>
         </table>
         <hr>

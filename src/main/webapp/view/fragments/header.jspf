@@ -26,6 +26,7 @@
                 <ul class="nav navbar-nav">
                     <%--<li class="active"><a href="/home">Home</a></li>--%>
                     <%--<li><a href="/joinwithus">Join With Us Now</a></li>--%>
+                    <li><a href="/dash"><h3>My Dashboard</h3></a></li>
                     <%
                         try {
                             request.getSession(false).getCreationTime();
@@ -34,7 +35,10 @@
                     <%} catch (java.lang.IllegalStateException e) {%>
                     <li><a href="/login"><h3>Login</h3></a></li>
                     <%}%>
-                    <li><a href="/dash"><h3>My Dashboard</h3></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><h3 style="color: #0000FF">
+                        Hi, <%out.print(request.getSession().getAttribute("authName").toString());%></h3></li>
                 </ul>
             </div>
         </div>

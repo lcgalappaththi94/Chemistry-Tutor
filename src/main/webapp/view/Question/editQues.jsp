@@ -73,10 +73,8 @@
         function createXMLHttpRequest() {
             var xmlhttp;
             if (window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
             } else {
-                // code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
             return xmlhttp;
@@ -256,6 +254,7 @@
                 <input type="hidden" name="anw5No" value="<%out.print(answers.get(4).getAnsNo());%>">
                 <input type="hidden" name="currentPage" value="<%out.print(request.getAttribute("currentPage"));%>">
                 <input type="hidden" name="length" value="<%out.print(request.getAttribute("length"));%>">
+                <input type="hidden" name="allQuestions" value="<%out.print(request.getAttribute("allQuestions"));%>">
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්ණයට අදාළ මාතෘකාව:</label>
@@ -435,6 +434,7 @@
     var current;
 
     function openPop(clickedElement) {
+        tinymce.get('area').setContent("");
         if (clickedElement.value != "") {
             var actualContent = document.getElementById("hidden" + clickedElement.id).value;
             tinymce.get('area').setContent(actualContent);
@@ -476,12 +476,14 @@
 
     window.onclick = function (event) {
         if (event.target == modal) {
-            modal.style.display = "none";
-            tinymce.get('area').setContent("");
-            current = null;
+            //modal.style.display = "none";
+            //tinymce.get('area').setContent("");
+            closePop();
         } else if (event.target == modalAddTopic) {
             modalAddTopic.style.display = "none";
             document.getElementById('topic').value = "";
+            document.getElementById('topicCheck').innerHTML = "";
+            document.getElementById('topicSuccess').innerHTML = "";
         }
     }
 </script>

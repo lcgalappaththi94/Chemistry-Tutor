@@ -73,10 +73,8 @@
         function createXMLHttpRequest() {
             var xmlhttp;
             if (window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
             } else {
-                // code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
             return xmlhttp;
@@ -363,6 +361,7 @@
     var current;
 
     function openPop(clickedElement) {
+        tinymce.get('area').setContent("");
         if (clickedElement.value != "") {
             var actualContent = document.getElementById("hidden" + clickedElement.id).value;
             tinymce.get('area').setContent(actualContent);
@@ -404,12 +403,14 @@
 
     window.onclick = function (event) {
         if (event.target == modal) {
-            modal.style.display = "none";
-            tinymce.get('area').setContent("");
-            current = null;
+            //modal.style.display = "none";
+            //tinymce.get('area').setContent("");
+            closePop();
         } else if (event.target == modalAddTopic) {
             modalAddTopic.style.display = "none";
             document.getElementById('topic').value = "";
+            document.getElementById('topicCheck').innerHTML = "";
+            document.getElementById('topicSuccess').innerHTML = "";
         }
     }
 </script>
