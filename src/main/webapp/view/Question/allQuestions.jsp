@@ -89,6 +89,10 @@
         <div class="panel-heading">
             <h1>සියලුම ප්‍රශ්න</h1>
         </div>
+
+        <%
+            ArrayList<QueAuther> quesList = (ArrayList<QueAuther>) request.getAttribute("quesList");
+            if (!quesList.isEmpty()) {%>
         <table id="services" class="table table-striped table-hover table-users">
             <thead>
             <tr>
@@ -98,7 +102,6 @@
             </thead>
             <tbody>
             <%
-                ArrayList<QueAuther> quesList = (ArrayList<QueAuther>) request.getAttribute("quesList");
                 int length = quesList.size();
                 for (int i = 0; i < length; i++) {
                     QueAuther question = quesList.get(i);
@@ -146,17 +149,22 @@
                         <button class="btn btn-info" type="submit">Delete</button>
                     </form>
                 </td>
-                <%
-                        }
-                    }
-                %>
             </tr>
+            <%
+                    }
+                }
+            } else {%>
+            <h1 style="border: 1px solid #cbcbcb;
+            border-radius: 5px;
+            padding: 10px 10px 10px 10px;
+            background-color: #eeedef;">තවම කිසිවක් නැත.</h1>
+            <%}%>
             </tbody>
         </table>
         <hr>
-        &nbsp;
-        &nbsp;
 
+        &nbsp;
+        &nbsp;
         <ul class="pagination" id="pagination-demo"></ul>
 
         &nbsp;

@@ -16,10 +16,6 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 
     <style type="text/css">
-        body {
-            background: url(${pageContext.request.contextPath}/resources/images/93742-d09dd7090171c70be749072814043b26.jpg);
-        }
-
         h4, img {
             border: 1px solid #cbcbcb;
             border-radius: 5px;

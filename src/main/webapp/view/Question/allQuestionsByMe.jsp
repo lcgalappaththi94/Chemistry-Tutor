@@ -83,6 +83,7 @@
             document.getElementById("msg").innerHTML = "";
         }
     </script>
+
 </head>
 
 <div id="header">
@@ -96,11 +97,11 @@
             <h1>තමා විසින් එක්කල ප්‍රශ්න සියල්ල &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span id="msg" style="background-color: #0f0f0f">${msg}</span></h1>
         </div>
+        <%
+            ArrayList<Question> quesList = (ArrayList<Question>) request.getAttribute("quesList");
+            if (!quesList.isEmpty()) {%>
         <table id="services" class="table table-striped table-hover table-users">
             <tbody>
-                <%
-                ArrayList<Question> quesList = (ArrayList<Question>) request.getAttribute("quesList");
-                if (!quesList.isEmpty()) {%>
             <thead>
             <tr>
                 <th>ප්‍රශ්නය</th>
@@ -149,14 +150,19 @@
                 }
             } else {
             %>
-            <h1>තවම කිසිවක් නැත.</h1>
+            <h1 style="border: 1px solid #cbcbcb;
+            border-radius: 5px;
+            padding: 10px 10px 10px 10px;
+            background-color: #eeedef;">තවම කිසිවක් නැත.</h1>
             <%}%>
             </tbody>
         </table>
         <hr>
+
         &nbsp;
         &nbsp;
         <ul class="pagination" id="pagination-demo"></ul>
+
         &nbsp;
         &nbsp;
         <span class="form-control" id="pageDetail"></span>
