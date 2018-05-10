@@ -110,10 +110,10 @@
                     String q = question.getQuesNo();
                     String author = question.getAuthId();
                     StringBuilder questionWithAuthor = new StringBuilder(question.getQues());
-                    questionWithAuthor.append("\n").append("- ").
-                            append(question.getDesig()).append(".").append(question.getAutherName()).append(" -");
+                    questionWithAuthor.append("<br><i style='color:blue'>- ").
+                            append(question.getDesig()).append(".").append(question.getAutherName()).append(" -</i>");
                     if (author.equals(request.getSession().getAttribute("authId"))) {
-                        questionWithAuthor.append(" (You) -");
+                        questionWithAuthor.append("<i style='color:blue'> (You) -<i>");
                     }
                 %>
                 <td class="ques"><% out.print(questionWithAuthor); %></td>

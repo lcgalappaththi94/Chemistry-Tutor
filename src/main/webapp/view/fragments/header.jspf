@@ -27,18 +27,11 @@
                     <%--<li class="active"><a href="/home">Home</a></li>--%>
                     <%--<li><a href="/joinwithus">Join With Us Now</a></li>--%>
                     <li><a href="/dash"><h3>My Dashboard</h3></a></li>
-                    <%
-                        try {
-                            request.getSession(false).getCreationTime();
-                    %>
-                    <li><a href="/logout"><h3>Logout</h3></a></li>
-                    <%} catch (java.lang.IllegalStateException e) {%>
-                    <li><a href="/login"><h3>Login</h3></a></li>
-                    <%}%>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><h3 style="color: #0000FF">
-                        Hi, <%out.print(request.getSession().getAttribute("authName").toString());%></h3></li>
+                    <li><h4 style="color: #0000FF">
+                        Hi, <%out.print(request.getSession().getAttribute("authName").toString());%></h4></li>
+                    <li><a href="/logout"><h3>Logout</h3></a></li>
                 </ul>
             </div>
         </div>
