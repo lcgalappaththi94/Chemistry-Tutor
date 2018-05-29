@@ -16,7 +16,7 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 
     <style type="text/css">
-        h4, img {
+        div.form-group h4, img {
             border: 1px solid #cbcbcb;
             border-radius: 5px;
             padding: 10px 10px 10px 10px;

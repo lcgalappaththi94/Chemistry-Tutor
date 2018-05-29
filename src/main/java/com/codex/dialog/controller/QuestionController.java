@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -209,8 +210,19 @@ public class QuestionController {
     public String getVarQues(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
-        String json = questionDAO.getVarQues(request.getParameter("quesNo"), request.getParameter("username"));
-        String out = null;
+        String quesNo = request.getParameter("quesNo");
+        String username = request.getParameter("username");
+
+//        String json = questionDAO.getVarQues(quesNo, username);
+
+//        Map<String, String> vars = new HashMap<>();
+//        vars.put("quesNo",quesNo);
+//        vars.put("username", username);
+        RestTemplate restTemplate = new RestTemplate();
+        String json = restTemplate.getForObject(
+                "http://localhost/getQuestions.php?quesNo=" + quesNo + "&username=" + username, String.class);
+
+        String out;
         try {
             out = new String(json.getBytes("UTF-8"));
         } catch (java.io.UnsupportedEncodingException e) {
