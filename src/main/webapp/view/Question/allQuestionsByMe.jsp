@@ -84,6 +84,19 @@
         }
     </script>
 
+    <style type="text/css">
+        form {
+            display: inline;
+        }
+
+        .tile {
+            border: 1px solid #cbcbcb;
+            border-radius: 5px;
+            padding: 5px 5px 5px 5px;
+            background-color: #ffffff;
+        }
+    </style>
+
 </head>
 
 <div id="header">
@@ -100,63 +113,58 @@
         <%
             ArrayList<Question> quesList = (ArrayList<Question>) request.getAttribute("quesList");
             if (!quesList.isEmpty()) {%>
-        <table id="services" class="table table-striped table-hover table-users">
-            <tbody>
-            <thead>
-            <tr>
-                <th>ප්‍රශ්නය</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-            </thead>
+        <div class="panel-body">
+
 
             <% for (Question question : quesList) {%>
-            <tr class="add-row">
-                <%
-                    String q = question.getQuesNo();
-                %>
-                <td class="ques"><% out.print(question.getQues()); %></td>
-                <td>
-                    <form method="post" action="/viewQues">
-                        <input type="hidden" name="quesNo" value="<%=q%>">
-                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
-                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
-                        <input type="hidden" name="allQuestions" value="0">
-                        <button class="btn btn-info" type="submit">Read More</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="/searchQues">
-                        <input type="hidden" name="quesNo" value="<%=q%>">
-                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
-                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
-                        <input type="hidden" name="allQuestions" value="0">
-                        <button class="btn btn-info" type="submit">Edit</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" onsubmit="return confirm('Do you really want to delete the Question ?');"
-                          action="/deleteQues">
-                        <input type="hidden" name="quesNo" value="<%=q%>">
-                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
-                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
-                        <input type="hidden" name="allQuestions" value="0">
-                        <button class="btn btn-info" type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
             <%
-                }
-            } else {
+                String q = question.getQuesNo();
             %>
-            <h1 style="border: 1px solid #cbcbcb;
+            <div class="tile">
+                <h4><% out.print(question.getQues()); %></h4>
+            <hr>
+
+            <form method="post" action="/viewQues">
+                <input type="hidden" name="quesNo" value="<%=q%>">
+                <input type="hidden" name="currentPage"
+                       value="<%=(int)request.getAttribute("currentPage")%>">
+                <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                <input type="hidden" name="allQuestions" value="0">
+                <button class="btn btn-info" type="submit">Read More</button>
+            </form>
+
+
+            <form method="post" action="/searchQues">
+                <input type="hidden" name="quesNo" value="<%=q%>">
+                <input type="hidden" name="currentPage"
+                       value="<%=(int)request.getAttribute("currentPage")%>">
+                <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                <input type="hidden" name="allQuestions" value="0">
+                <button class="btn btn-info" type="submit">Edit</button>
+            </form>
+
+            <form method="post"
+                  onsubmit="return confirm('Do you really want to delete the Question ?');"
+                  action="/deleteQues">
+                <input type="hidden" name="quesNo" value="<%=q%>">
+                <input type="hidden" name="currentPage"
+                       value="<%=(int)request.getAttribute("currentPage")%>">
+                <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                <input type="hidden" name="allQuestions" value="0">
+                <button class="btn btn-info" type="submit">Delete</button>
+            </form>
+        </div>
+        <br>
+
+        <%
+            }
+        } else {
+        %>
+        <h1 style="border: 1px solid #cbcbcb;
             border-radius: 5px;
             padding: 10px 10px 10px 10px;
             background-color: #eeedef;">තවම කිසිවක් නැත.</h1>
-            <%}%>
-            </tbody>
-        </table>
+        <%}%>
         <hr>
 
         &nbsp;
@@ -168,10 +176,11 @@
         <span class="form-control" id="pageDetail"></span>
     </div>
 </div>
+</div>
 </body>
 
-<div id="footer">
-    <%@ include file="../fragments/footer.jspf" %>
-</div>
+<%--<div id="footer">--%>
+    <%--<%@ include file="../fragments/footer.jspf" %>--%>
+<%--</div>--%>
 
 </html>

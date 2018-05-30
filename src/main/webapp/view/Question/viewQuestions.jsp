@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
     <script src="${pageContext.request.contextPath}/resources/jquery/jquery-3.1.1.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 
@@ -20,7 +20,7 @@
             border: 1px solid #cbcbcb;
             border-radius: 5px;
             padding: 10px 10px 10px 10px;
-            background-color: #eeedef;
+            background-color: #f0f0f1;
         }
     </style>
 </head>
@@ -29,7 +29,7 @@
     <%@ include file="../fragments/header.jspf" %>
 </div>
 
-<body onload="sendRequest();">
+<body>
 <div class="container">
     <%
         Question question = (Question) request.getAttribute("ques");
@@ -164,8 +164,8 @@
 </div>
 </body>
 
-<div id="footer">
-    <%@ include file="../fragments/footer.jspf" %>
-</div>
+<%--<div id="footer">--%>
+    <%--<%@ include file="../fragments/footer.jspf" %>--%>
+<%--</div>--%>
 
 </html>

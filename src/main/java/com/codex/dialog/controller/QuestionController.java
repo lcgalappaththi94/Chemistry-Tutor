@@ -50,14 +50,11 @@ public class QuestionController {
             return "";
         }
 
-        String myparam = request.getParameter("ques");
-        byte[] bytes = myparam.getBytes("UTF-8");
-
         session.setAttribute(topicId, null);
-        Question question = new Question("" + nQuesId, authId, topicId, request.getParameter("ques"),
-                request.getParameter("media"), request.getParameter("corAnw"), request.getParameter("diff"),
-                request.getParameter("ex"), request.getParameter("exImage"), request.getParameter("exVed"),
-                request.getParameter("ref"));
+        Question question = new Question("" + nQuesId, authId, topicId, request.getParameter("ques").trim(),
+                request.getParameter("media").trim(), request.getParameter("corAnw").trim(), request.getParameter("diff").trim(),
+                request.getParameter("ex").trim(), request.getParameter("exImage").trim(), request.getParameter("exVed").trim(),
+                request.getParameter("ref").trim());
 
         ArrayList<Answer> answers = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
@@ -196,13 +193,6 @@ public class QuestionController {
             else
                 return "redirect:/allQues";
         }
-    }
-
-    @RequestMapping(value = "ques10", method = RequestMethod.GET)
-    @ResponseBody
-    public String get10Ques() throws SQLException, ClassNotFoundException {
-        String json = questionDAO.get10Ques();
-        return json;
     }
 
     @RequestMapping(value = "varQues", produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)

@@ -11,8 +11,6 @@
         var currentPage = 0;
         var length = 0;
         var pages = 0;
-        var newWindow = null;
-
 
         function init() {
             length = <%=(int)request.getAttribute("length")%>;
@@ -76,6 +74,18 @@
         }
     </script>
 
+    <style type="text/css">
+        form {
+            display: inline;
+        }
+
+        .tile {
+            border: 1px solid #cbcbcb;
+            border-radius: 5px;
+            padding: 5px 5px 5px 5px;
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 
 <div id="header">
@@ -89,78 +99,82 @@
         <div class="panel-heading">
             <h1>සියලුම ප්‍රශ්න</h1>
         </div>
+        <div class="panel-body">
 
-        <%
-            ArrayList<QueAuther> quesList = (ArrayList<QueAuther>) request.getAttribute("quesList");
-            if (!quesList.isEmpty()) {%>
-        <table id="services" class="table table-striped table-hover table-users">
-            <thead>
-            <tr>
-                <th>ප්‍රශ්නය</th>
-                <th>&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
+            <%
+                ArrayList<QueAuther> quesList = (ArrayList<QueAuther>) request.getAttribute("quesList");
+                if (!quesList.isEmpty()) {%>
+
             <%
                 int length = quesList.size();
+            %>
+            <input type="hidden" id="length" value="<%=length%>"/>
+            <%
                 for (int i = 0; i < length; i++) {
                     QueAuther question = quesList.get(i);
             %>
-            <input type="hidden" id="length" value="<%=length%>"/>
 
-            <tr class="add-row">
-                <%
-                    String q = question.getQuesNo();
-                    String author = question.getAuthId();
-                    StringBuilder questionWithAuthor = new StringBuilder(question.getQues());
-                    questionWithAuthor.append("<br><i style='color:blue'>- ").
-                            append(question.getDesig()).append(".").append(question.getAutherName()).append(" -</i>");
-                    if (author.equals(request.getSession().getAttribute("authId"))) {
-                        questionWithAuthor.append("<i style='color:blue'> (You) -<i>");
-                    }
-                %>
-                <td class="ques"><% out.print(questionWithAuthor); %></td>
-                <td>
-                    <form method="post" action="/viewQues">
-                        <input type="hidden" name="quesNo" value="<%=q%>">
-                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
-                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
-                        <input type="hidden" name="allQuestions" value="1">
-                        <button class="btn btn-info" type="submit">Read More</button>
-                    </form>
-                </td>
-                <% if (author.equals(request.getSession().getAttribute("authId"))) {%>
-                <td>
-                    <form method="post" action="/searchQues">
-                        <input type="hidden" name="quesNo" value="<%=q%>">
-                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
-                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
-                        <input type="hidden" name="allQuestions" value="1">
-                        <button class="btn btn-info" type="submit">Edit</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" onsubmit="return confirm('Do you really want to delete the Question ?');"
-                          action="/deleteQues">
-                        <input type="hidden" name="quesNo" value="<%=q%>">
-                        <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
-                        <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
-                        <input type="hidden" name="allQuestions" value="1">
-                        <button class="btn btn-info" type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
+
             <%
-                    }
+                String q = question.getQuesNo();
+                String author = question.getAuthId();
+                StringBuilder questionWithAuthor = new StringBuilder(question.getQues());
+                questionWithAuthor.append("<br><i style='color:blue'>- ").
+                        append(question.getDesig()).append(".").append(question.getAutherName()).append(" -</i>");
+                if (author.equals(request.getSession().getAttribute("authId"))) {
+                    questionWithAuthor.append("<i style='color:blue'> (You) -</i>");
                 }
+            %>
+
+            <div class="tile">
+                <h4><% out.print(questionWithAuthor); %></h4>
+                <hr>
+
+                <form method="POST" action="/viewQues">
+                    <input type="hidden" name="quesNo" value="<%=q%>">
+                    <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                    <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                    <input type="hidden" name="allQuestions" value="1">
+                    <button class="btn btn-info" type="submit">Read More</button>
+                </form>
+
+                <% if (author.equals(request.getSession().getAttribute("authId"))) {%>
+
+                <form method="POST" action="/searchQues">
+                    <input type="hidden" name="quesNo" value="<%=q%>">
+                    <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                    <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                    <input type="hidden" name="allQuestions" value="1">
+                    <button class="btn btn-info" type="submit">Edit</button>
+                </form>
+
+
+                <form method="POST" onsubmit="return confirm('Do you really want to delete the Question ?');"
+                      action="/deleteQues">
+                    <input type="hidden" name="quesNo" value="<%=q%>">
+                    <input type="hidden" name="currentPage" value="<%=(int)request.getAttribute("currentPage")%>">
+                    <input type="hidden" name="length" value="<%=(int)request.getAttribute("length")%>">
+                    <input type="hidden" name="allQuestions" value="1">
+                    <button class="btn btn-info" type="submit">Delete</button>
+                </form>
+            </div>
+            <br>
+
+            <%
             } else {%>
-            <h1 style="border: 1px solid #cbcbcb;
+        </div>
+        <br>
+        <%
+                }
+            }
+        } else {
+        %>
+        <h1 style="border: 1px solid #cbcbcb;
             border-radius: 5px;
             padding: 10px 10px 10px 10px;
             background-color: #eeedef;">තවම කිසිවක් නැත.</h1>
-            <%}%>
-            </tbody>
-        </table>
+        <%}%>
+
         <hr>
 
         &nbsp;
@@ -172,11 +186,12 @@
         <span class="form-control" id="pageDetail"></span>
     </div>
 </div>
+</div>
 
 </body>
 
-<div id="footer">
-    <%@ include file="../fragments/footer.jspf" %>
-</div>
+<%--<div id="footer">--%>
+<%--<%@ include file="../fragments/footer.jspf" %>--%>
+<%--</div>--%>
 
 </html>

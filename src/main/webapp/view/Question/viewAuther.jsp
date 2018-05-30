@@ -207,8 +207,8 @@
 </div>
 </body>
 
-<div id="footer">
-    <%@ include file="../fragments/footer.jspf" %>
-</div>
+<%--<div id="footer">--%>
+    <%--<%@ include file="../fragments/footer.jspf" %>--%>
+<%--</div>--%>
 
 </html>

@@ -32,11 +32,6 @@ public class HomeController {
         return "Question/addQuestion";
     }
 
-    @RequestMapping(value = "topic", method = RequestMethod.GET)
-    public String addTopic() throws ClassNotFoundException, SQLException {
-        return "Question/newTopic";
-    }
-
     @RequestMapping(value = "editQues", method = RequestMethod.GET)
     public String editQuestion(HttpServletRequest request) throws ClassNotFoundException, SQLException {
         return "Question/editQues";

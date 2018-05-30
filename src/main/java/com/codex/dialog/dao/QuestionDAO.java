@@ -31,15 +31,5 @@ public interface QuestionDAO {
 
     public boolean deleteQuestion(String questionId) throws ClassNotFoundException, SQLException;
 
-    public String get10Ques() throws ClassNotFoundException, SQLException;
-
-    public String get20Ques() throws ClassNotFoundException, SQLException;
-
-    public String get30Ques() throws ClassNotFoundException, SQLException;
-
-    public String get40Ques() throws ClassNotFoundException, SQLException;
-
-    public String get50Ques() throws ClassNotFoundException, SQLException;
-
     public String getVarQues(String quesNo, String username) throws ClassNotFoundException, SQLException;
 }
