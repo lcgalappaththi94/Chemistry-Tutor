@@ -195,7 +195,8 @@ public class QuestionController {
         }
     }
 
-    @RequestMapping(value = "varQues", produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)
+    //produces ="text/plain;charset=UTF-8"
+    @RequestMapping(value = "varQues", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public String getVarQues(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
         response.setCharacterEncoding("UTF-8");
