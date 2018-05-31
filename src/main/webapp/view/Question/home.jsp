@@ -4,6 +4,7 @@
     <title>Home</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//cdn.jsdelivr.net/npm/mobile-detect@1.4.1/mobile-detect.min.js"></script>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -56,6 +57,8 @@
     </style>
 
     <script>
+        var isMobile;
+
         function createXMLHttpRequest() {
             var xmlhttp;
             if (window.XMLHttpRequest) {
@@ -127,10 +130,25 @@
 
         function clearSpan() {
             setTimeout(clearSpanNow, 1500);
+            var md = new MobileDetect(window.navigator.userAgent);
+            var os = md.os();
+            if (os == "AndroidOS" || os == "iOS")
+                isMobile = true;
+            else
+                isMobile = false;
         }
 
         function clearSpanNow() {
             document.getElementById("msg").innerHTML = "";
+        }
+
+        function newQuestion() {
+            if(isMobile==true){
+                alert("Not Supported on mobile devices try again using a desktop");
+                return false;
+            }else{
+                return true;
+            }
         }
     </script>
 
@@ -149,36 +167,42 @@
                 <span id="msg" style="background-color: #0f0f0f">${msg}</span></h1>
         </div>
         <div class="panel-body">
-            <form method="GET" action="allQuesByMe">
-                <button class="btn btn-info btn-lg" value="තමා විසින් එක්කල ප්‍රශ්න සියල්ල">
-                    <span class="glyphicon glyphicon-star"></span> තමා විසින් එක්කල ප්‍රශ්න සියල්ල
+            <form class="form-horizontal" method="GET" action="allQuesByMe">
+                <button class="btn btn-info btn-lg value=" තමා විසින් එක්කල ප්‍රශ්න සියල්ල
+                ">
+                <span class="glyphicon glyphicon-star"></span>
+                <h4 style="display: inline">තමා විසින් එක්කල ප්‍රශ්න සියල්ල</h4>
                 </button>
                 <input type="hidden" name="currentPage" value="1"/>
             </form>
 
             <form method="GET" action="allQues">
                 <button class="btn btn-primary btn-lg" value="ප්‍රශ්න සියල්ල">
-                    <span class="glyphicon glyphicon-list"></span> ප්‍රශ්න සියල්ල
+                    <span class="glyphicon glyphicon-list"></span>
+                    <h4 style="display: inline">ප්‍රශ්න සියල්ල</h4>
                 </button>
                 <input type="hidden" name="currentPage" value="1"/>
             </form>
 
-            <form method="GET" action="addQ">
+            <form method="GET" action="addQ" onsubmit="return newQuestion()">
                 <button class="btn btn-success btn-lg" value="නව ප්‍රශ්නයක් එක් කීරීමට">
-                    <span class="glyphicon glyphicon-plus"></span> නව ප්‍රශ්නයක් එක් කීරීමට
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <h4 style="display: inline">නව ප්‍රශ්නයක් එක් කීරීමට</h4>
                 </button>
             </form>
 
             <form>
                 <button class="btn btn-danger btn-lg" type="button" value="නව මාතෘකාවක් එක් කීරීමට"
                         onclick="openPopAddTopic()">
-                    <span class="glyphicon glyphicon-plus"></span> නව මාතෘකාවක් එක් කීරීමට
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <h4 style="display: inline">නව මාතෘකාවක් එක් කීරීමට</h4>
                 </button>
             </form>
 
             <form method="POST" action="getAuthor">
                 <button class="btn btn-warning btn-lg" value="ඔබගේ ගිණුම වෙත පිවිසෙන්න">
-                    <span class="glyphicon glyphicon-user"></span> ඔබගේ ගිණුම වෙනස් කිරීමට
+                    <span class="glyphicon glyphicon-user"></span>
+                    <h4 style="display: inline">ඔබගේ ගිණුම වෙනස් කිරීමට</h4>
                 </button>
             </form>
         </div>

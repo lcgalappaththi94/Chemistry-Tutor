@@ -7,11 +7,12 @@
     <title>All Questions By Me</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//cdn.jsdelivr.net/npm/mobile-detect@1.4.1/mobile-detect.min.js"></script>
     <script type="text/javascript">
         var currentPage = 0;
         var length = 0;
         var pages = 0;
-        var newWindow = null;
+        var isMobile;
 
         function init() {
             length = <%=(int)request.getAttribute("length")%>;
@@ -49,6 +50,12 @@
             document.getElementById('' + currentPage).style.color = '#FF0000';
             document.getElementById("pageDetail").innerHTML = "<b>Page " + currentPage + " of " + pages + "</b>";
             clearSpan();
+            var md = new MobileDetect(window.navigator.userAgent);
+            var os = md.os();
+            if (os == "AndroidOS" || os == "iOS")
+                isMobile = true;
+            else
+                isMobile = false;
         }
 
         function transition(pageNumber) {
@@ -81,6 +88,15 @@
 
         function clearSpanNow() {
             document.getElementById("msg").innerHTML = "";
+        }
+
+        function editQuestion() {
+            if(isMobile==true){
+                alert("Not Supported on mobile devices try again using a desktop");
+                return false;
+            }else{
+                return true;
+            }
         }
     </script>
 
@@ -134,7 +150,7 @@
             </form>
 
 
-            <form method="post" action="/searchQues">
+            <form method="post" action="/searchQues" onsubmit="return editQuestion();">
                 <input type="hidden" name="quesNo" value="<%=q%>">
                 <input type="hidden" name="currentPage"
                        value="<%=(int)request.getAttribute("currentPage")%>">
