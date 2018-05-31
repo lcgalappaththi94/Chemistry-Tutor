@@ -168,41 +168,40 @@
         </div>
         <div class="panel-body">
             <form class="form-horizontal" method="GET" action="allQuesByMe">
-                <button class="btn btn-info btn-lg value=" තමා විසින් එක්කල ප්‍රශ්න සියල්ල
-                ">
+                <button class="btn btn-info btn-lg">
                 <span class="glyphicon glyphicon-star"></span>
-                <h4 style="display: inline">තමා විසින් එක්කල ප්‍රශ්න සියල්ල</h4>
+                <h5 style="display: inline">තමා විසින් එක්කල ප්‍රශ්න සියල්ල</h5>
                 </button>
                 <input type="hidden" name="currentPage" value="1"/>
             </form>
 
             <form method="GET" action="allQues">
-                <button class="btn btn-primary btn-lg" value="ප්‍රශ්න සියල්ල">
+                <button class="btn btn-primary btn-lg">
                     <span class="glyphicon glyphicon-list"></span>
-                    <h4 style="display: inline">ප්‍රශ්න සියල්ල</h4>
+                    <h5 style="display: inline">ප්‍රශ්න සියල්ල</h5>
                 </button>
                 <input type="hidden" name="currentPage" value="1"/>
             </form>
 
             <form method="GET" action="addQ" onsubmit="return newQuestion()">
-                <button class="btn btn-success btn-lg" value="නව ප්‍රශ්නයක් එක් කීරීමට">
+                <button class="btn btn-success btn-lg">
                     <span class="glyphicon glyphicon-plus"></span>
-                    <h4 style="display: inline">නව ප්‍රශ්නයක් එක් කීරීමට</h4>
+                    <h5 style="display: inline">නව ප්‍රශ්නයක් එක් කීරීමට</h5>
                 </button>
             </form>
 
             <form>
-                <button class="btn btn-danger btn-lg" type="button" value="නව මාතෘකාවක් එක් කීරීමට"
+                <button class="btn btn-danger btn-lg" type="button"
                         onclick="openPopAddTopic()">
                     <span class="glyphicon glyphicon-plus"></span>
-                    <h4 style="display: inline">නව මාතෘකාවක් එක් කීරීමට</h4>
+                    <h5 style="display: inline">නව මාතෘකාවක් එක් කීරීමට</h5>
                 </button>
             </form>
 
             <form method="POST" action="getAuthor">
-                <button class="btn btn-warning btn-lg" value="ඔබගේ ගිණුම වෙත පිවිසෙන්න">
+                <button class="btn btn-warning btn-lg">
                     <span class="glyphicon glyphicon-user"></span>
-                    <h4 style="display: inline">ඔබගේ ගිණුම වෙනස් කිරීමට</h4>
+                    <h5 style="display: inline">ඔබගේ ගිණුම වෙනස් කිරීමට</h5>
                 </button>
             </form>
         </div>
