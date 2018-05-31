@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -133,35 +135,9 @@
     </script>
 
 </head>
+
 <div id="header">
     <%@ include file="../fragments/header.jspf" %>
-</div>
-
-<div id="myModalAddTopic" class="modal">
-    <div class="modal-content">
-        <span class="close" style="color: red" onclick="closePopAddTopic()">Close</span>
-        <h1 class="textTitle">නව මාතෘකාවක්<span id="topicSuccess"></span></h1>
-        <br><br><br>
-        <hr>
-        <form class="form-horizontal">
-
-            <div class="form-group">
-                <label class="control-label col-sm-2">මාතෘකාව : </label>
-                <div class="col-sm-6">
-                    <input id="topic" type="text" class="form-control"
-                           placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic(0)" autofocus required/>
-                </div>
-                <label id="topicCheck"></label>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" onclick="checkTopic(1)" class="btn btn-success">Submit</button>
-                    <button type="reset" class="btn btn-primary">Clear</button>
-                </div>
-            </div>
-        </form>
-    </div>
 </div>
 
 <body onload="clearSpan()">
@@ -175,14 +151,14 @@
         <div class="panel-body">
             <form method="GET" action="allQuesByMe">
                 <button class="btn btn-info btn-lg" value="තමා විසින් එක්කල ප්‍රශ්න සියල්ල">
-                    <span class="glyphicon glyphicon-list"></span> තමා විසින් එක්කල ප්‍රශ්න සියල්ල
+                    <span class="glyphicon glyphicon-star"></span> තමා විසින් එක්කල ප්‍රශ්න සියල්ල
                 </button>
                 <input type="hidden" name="currentPage" value="1"/>
             </form>
 
             <form method="GET" action="allQues">
                 <button class="btn btn-primary btn-lg" value="ප්‍රශ්න සියල්ල">
-                    <span class="glyphicon glyphicon-search"></span> ප්‍රශ්න සියල්ල
+                    <span class="glyphicon glyphicon-list"></span> ප්‍රශ්න සියල්ල
                 </button>
                 <input type="hidden" name="currentPage" value="1"/>
             </form>
@@ -202,11 +178,39 @@
 
             <form method="POST" action="getAuthor">
                 <button class="btn btn-warning btn-lg" value="ඔබගේ ගිණුම වෙත පිවිසෙන්න">
-                    <span class="glyphicon glyphicon-pencil"></span> ඔබගේ ගිණුම වෙනස් කිරීමට
+                    <span class="glyphicon glyphicon-user"></span> ඔබගේ ගිණුම වෙනස් කිරීමට
                 </button>
             </form>
         </div>
     </div>
+
+    <div id="myModalAddTopic" class="modal">
+        <div class="modal-content">
+            <span class="close" style="color: red" onclick="closePopAddTopic()">Close</span>
+            <h1 class="textTitle">නව මාතෘකාවක්<span id="topicSuccess"></span></h1>
+            <br><br><br>
+            <hr>
+            <form class="form-horizontal">
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">මාතෘකාව : </label>
+                    <div class="col-sm-6">
+                        <input id="topic" type="text" class="form-control"
+                               placeholder="ඔබගේ ප්‍රශ්නයට අදාල මාතෘකාව" onkeyup="checkTopic(0)" autofocus required/>
+                    </div>
+                    <label id="topicCheck"></label>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" onclick="checkTopic(1)" class="btn btn-success">Submit</button>
+                        <button type="reset" class="btn btn-primary">Clear</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 </body>
 
@@ -234,6 +238,6 @@
 </script>
 
 <%--<div id="footer">--%>
-    <%--<%@ include file="../fragments/footer.jspf" %>--%>
+<%--<%@ include file="../fragments/footer.jspf" %>--%>
 <%--</div>--%>
 </html>

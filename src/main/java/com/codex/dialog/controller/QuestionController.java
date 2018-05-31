@@ -211,7 +211,7 @@ public class QuestionController {
 //        vars.put("username", username);
         RestTemplate restTemplate = new RestTemplate();
         String json = restTemplate.getForObject(
-                "http://localhost/getQuestions.php?quesNo=" + quesNo + "&username=" + username, String.class);
+                "http://localhost:8012/getQuestions.php?quesNo=" + quesNo + "&username=" + username, String.class);
 
         String out;
         try {

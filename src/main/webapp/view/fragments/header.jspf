@@ -4,6 +4,7 @@
 <script src="${pageContext.request.contextPath}/resources/jquery/jquery-3.1.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <style type="text/css">
     body {
@@ -20,18 +21,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><h3>Quiz Game Web</h3></a>
+                <a class="navbar-brand" href="#"><h3 style="display: inline">Chemistry Tutor Web</h3></a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <%--<li class="active"><a href="/home">Home</a></li>--%>
-                    <%--<li><a href="/joinwithus">Join With Us Now</a></li>--%>
-                    <li><a href="/dash"><h3>My Dashboard</h3></a></li>
+                    <li><a href="/dash"><h3 style="display: inline"><span class="glyphicon glyphicon-dashboard"></span>
+                        My Dashboard</h3></a></li>
+                    <li><a href="#"><h3 style="display: inline">
+                        <span class="glyphicon glyphicon-earphone"></span> Contact Us</h3></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><h4 style="color: #0000FF">
-                        Hi, <%out.print(request.getSession().getAttribute("authName").toString());%></h4></li>
-                    <li><a href="/logout"><h3>Logout</h3></a></li>
+                    <li><a href="#" style="cursor: default"><h3 style="color: #0000FF; display: inline">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <%
+                            out.print(request.getSession().getAttribute("authName").toString().split(" ")[0]);
+                        %></h3>
+                    </a></li>
+                    <li><a href="/logout"><h3 style="display: inline">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        Logout</h3></a></li>
                 </ul>
             </div>
         </div>
