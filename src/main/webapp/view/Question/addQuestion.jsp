@@ -331,6 +331,7 @@
                                placeholder="නිවරදි පිළිතුරට අදාල  අංකය" min="1" max="5" required/>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="control-label col-sm-2">ප්‍රශ්නයේ අපහසුතාවය:</label>
                     <div class="col-sm-3">

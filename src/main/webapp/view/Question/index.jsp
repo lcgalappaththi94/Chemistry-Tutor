@@ -7,6 +7,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
 
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888888;
+            width: 80%;
+        }
+
+        .close {
+            color: #FF0000;
+            float: right;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .textTitle {
+            color: #0000FF;
+            float: left;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
     <script type="text/javascript">
         var verificationCode = "";
 
@@ -21,7 +68,7 @@
         }
 
         function checkEmail(form) {
-            if(document.getElementById("form-email").value.length>0) {
+            if (document.getElementById("form-email").value.length > 0) {
                 if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("form-email").value)) {
                     window.alert("Invalid Email");
                     document.getElementById("form-email").value = "";
@@ -90,6 +137,78 @@
                 return false;
             }
         }
+
+        function sendForgot() {
+            var email = document.getElementById('email').value;
+            var forgotSuccess = document.getElementById('forgotSuccess');
+            var url = "forgotSend?email=" + email;
+
+            var request = createXMLHttpRequest();
+            request.open("POST", url, true);
+            request.send(null);
+            request.onreadystatechange = function () {
+                if (request.readyState == 4) {
+                    if (request.status == 200) {
+                        var output = request.responseText;
+                        if (output == "1") {
+                            forgotSuccess.style.color = "green";
+                            forgotSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email Sent Check Your Inbox!!!";
+                            setTimeout(closePopForget, 1500);
+                        }
+                    } else {
+                        forgotSuccess.style.color = "red";
+                        forgotSuccess.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Error Occurred!!!";
+                    }
+                }
+            }
+        }
+
+        function checkForgot(isSubmit) {
+            var email = document.getElementById('email').value;
+            var label = document.getElementById('forgotCheck');
+            var button = document.getElementById("forgotSend");
+            var url = "forgot?email=" + email;
+            var emailOK = true;
+
+            if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
+                emailOK = false;
+            }
+
+            if (email.length != 0 && emailOK) {
+                var request = createXMLHttpRequest();
+                request.open("POST", url, true);
+                request.send(null);
+                request.onreadystatechange = function () {
+                    if (request.readyState == 4) {
+                        if (request.status == 200) {
+                            var output = request.responseText;
+                            if (output == "1") {
+                                label.innerHTML = "<span style='color:blue'><h4><= Ok</h4></span>";
+                                button.disabled = false;
+                                if (isSubmit == 1) {
+                                    sendForgot();
+                                }
+                            } else {
+                                button.disabled = true;
+                                label.innerHTML = "<span style='color:red'><h4><= Email Not Valid</h4></span>";
+                            }
+                        } else {
+                            alert("Error When Sending Email!!!");
+                        }
+                    }
+                }
+            } else {
+                label.innerHTML = "<span style='color:red'><h4><= Email Not Valid</h4></span>";
+            }
+        }
+
+        function clearSpan() {
+            setTimeout(clearSpanNow, 1500);
+        }
+
+        function clearSpanNow() {
+            document.getElementById("msg").innerHTML = "";
+        }
     </script>
 </head>
 
@@ -97,7 +216,36 @@
     <%@ include file="../fragments/loginHeader.jspf" %>
 </div>
 
-<body>
+<div id="myModalForgot" class="modal">
+    <div class="modal-content">
+        <span class="close" style="color: red" onclick="closePopForget()">Close</span>
+        <h1 class="textTitle">Forgot Password<span id="forgotSuccess"></span></h1>
+        <br><br><br>
+        <hr>
+        <form class="form-horizontal">
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Your Email : </label>
+                <div class="col-sm-6">
+                    <input id="email" type="email" class="form-control"
+                           placeholder="Enter your email here" onkeyup="checkForgot(0)" autofocus required/>
+                </div>
+                <label id="forgotCheck"></label>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" id="forgotSend" onclick="checkForgot(1)" class="btn btn-success" disabled>Send
+                        Password Reset Email
+                    </button>
+                    <button type="reset" class="btn btn-primary">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<body onload="clearSpan()">
 <div class="container">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -107,7 +255,9 @@
                     Objective of this project is to practise students who face A/L Exams
                 </p>
             </div>
+            <h1 id="msg" style="background-color: #0f0f0f">${msg}</h1>
         </div>
+
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-5">
@@ -115,7 +265,7 @@
                         <div class="form-top">
                             <div class="form-top-left">
                                 <h3>Login to our site</h3>
-                                <p>Enter username and password to log on:</p>
+                                <p>Enter username and password to login:</p>
                             </div>
                             <div class="form-top-right">
                                 <i class="fa fa-key"></i>
@@ -137,7 +287,9 @@
                                     show password
                                     <br>
                                 </div>
-                                <button type="submit" class="btn btn-success">Sign In</button>
+                                <button type="submit" class="btn btn-success">Sign In</button><br><br>
+                                <button type="button" onclick="openPopForget()" class="btn btn-danger">Forgot Password
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -225,7 +377,35 @@
 </div>
 
 </body>
+
+
+<script>
+    var modalForgot = document.getElementById('myModalForgot');
+
+    function openPopForget() {
+        modalForgot.style.display = "block";
+        document.getElementById('forgotCheck').innerHTML = "";
+        document.getElementById("forgotSend").disabled = true;
+    }
+
+    function closePopForget() {
+        modalForgot.style.display = "none";
+        document.getElementById('email').value = "";
+        document.getElementById('forgotCheck').innerHTML = "";
+        document.getElementById('forgotSuccess').innerHTML = "";
+        document.getElementById("forgotSend").disabled = true;
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modalForgot) {
+            modalForgot.style.display = "none";
+            document.getElementById('email').value = "";
+            document.getElementById("forgotSend").disabled = true;
+        }
+    }
+</script>
+
 <%--<div id="footer">--%>
-    <%--<%@ include file="../fragments/footer.jspf" %>--%>
+<%--<%@ include file="../fragments/footer.jspf" %>--%>
 <%--</div>--%>
 </html>

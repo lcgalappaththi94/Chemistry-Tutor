@@ -106,63 +106,27 @@
                 <input type="hidden" name="authId" value="<%out.print(auther.getAuthId());%>">
                 <input type="hidden" name="email" value="<%out.print(auther.getEmail());%>">
 
-                <%
-                    if (auther.getDesig().equals("Ms")) {
-                %>
-
-                <%--<div class="form-group">
-                    <label>Designation:</label>
-                    <select name="designation" class="form-control" id="sel1">
-                        <option selected value="Mr">Mr</option>
-                        <option value="Ms">Ms</option>
-                        <option value="Mrs">Mrs</option>
-                    </select>
-                </div>--%>
-                <div class="selectpicker">
-                    <label class="control-label col-sm-3">Designation:</label>
-                    <div class="col-sm-6">
-                        <select name="designation" class="form-control">
-                            <option value="Mr">Mr</option>
-                            <option selected value="Ms" value="Ms">Ms</option>
-                            <option value="Mrs">Mrs</option>
-                        </select>
-
-                    </div>
-                </div>
-
-                <% } else if (auther.getDesig().equals("Mr")) {
-                %>
-
                 <div class="form-group">
                     <label class="control-label col-sm-3">Designation:</label>
                     <div class="col-sm-6">
                         <select name="designation" class="form-control">
+                            <%if (auther.getDesig().equals("Ms")) {%>
+                            <option value="Mr">Mr</option>
+                            <option selected value="Ms" value="Ms">Ms</option>
+                            <option value="Mrs">Mrs</option>
+                            <% } else if (auther.getDesig().equals("Mr")) {%>
                             <option selected value="Mr">Mr</option>
                             <option value="Ms">Ms</option>
                             <option value="Mrs">Mrs</option>
-                        </select>
-
-                    </div>
-                </div>
-
-                <% } else if (auther.getDesig().equals("Mrs")) {
-                %>
-
-                <div class="selectpicker">
-                    <label class="control-label col-sm-3">Designation:</label>
-                    <div class="col-sm-6">
-                        <select name="designation" class="form-control">
+                            <% } else if (auther.getDesig().equals("Mrs")) {%>
                             <option value="Mr">Mr</option>
                             <option value="Ms" value="Ms">Ms</option>
                             <option selected value="Mrs">Mrs</option>
+                            <%}%>
                         </select>
-
                     </div>
                 </div>
 
-                <%
-                    }
-                %>
                 <div class="form-group">
                     <label class="control-label col-sm-3">Name :</label>
                     <div class="col-sm-6">
@@ -170,6 +134,7 @@
                                placeholder="ඔබගේ  නම ඇතුලත් කරන්න "/>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="control-label col-sm-3">Old Password :</label>
                     <div class="col-sm-6">
@@ -195,7 +160,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-3 col-sm-10">
                         <button type="submit" class="btn btn-success">Submit</button>
                         <button type="reset" class="btn btn-primary">Clear</button>
                     </div>
